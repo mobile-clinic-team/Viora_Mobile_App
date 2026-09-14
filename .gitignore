@@ -1,0 +1,15 @@
+.gradle/
+.kotlin/
+**/build/
+local.properties
+.idea/
+*.iml
+.tools/
+*.jks
+*.keystore
+captures/
+
+# Local Gradle/cache work directories
+.gradle-clean/
+.gradle-user-home/
+gradle-tmp/
