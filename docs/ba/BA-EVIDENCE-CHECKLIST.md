@@ -14,7 +14,7 @@ Criterion focus: **2.1 Idea and problem analysis**. Statuses are deliberately co
 | Survey objective and method | READY | [SURVEY-PLAN.md](SURVEY-PLAN.md), including consent, recruitment, analysis, and limitations. |
 | Google Form questionnaire | READY | [SURVEY-QUESTIONS.md](SURVEY-QUESTIONS.md), ready to transfer to Google Forms. |
 | Survey form screenshot | READY | SURVEY-E01 indexes the published Google Forms title, purpose, consent, time, and no-PHI instructions. |
-| Real response count | READY | SURVEY-E02 and the question charts show 61 responses used as the authoritative final count. |
+| Real response count | READY | SURVEY-E02 and the question charts show 61 recorded responses; Q1 visibly shows 60 explicit consent responses. The repository distinguishes recorded responses from consented responses. |
 | Respondent context chart | READY | SURVEY-E03 records the visible mixed respondent contexts without inventing a complete demographic breakdown. |
 | Problem/findings charts | READY | SURVEY-E04 and SURVEY-E05 support Q4 and Q7 quantitative findings; Q19 qualitative analysis remains pending. |
 | Feature-priority chart | READY | SURVEY-E06 records Q11 feature priorities with counts and percentages. |
@@ -27,7 +27,7 @@ Criterion focus: **2.1 Idea and problem analysis**. Statuses are deliberately co
 | Q19 qualitative analysis | PENDING RAW RESPONSES | Obtain the raw text or a sanitized export before clustering or quoting free-text answers. |
 | Clinical/user validation | OPTIONAL / NOT CLAIMED | Not required to close criterion 2.1 unless the project claims clinical validation. No clinician validation is claimed. |
 
-The repository now claims only the verified 61-response survey results and indexed screenshots. It claims no quotations, clinic partnership, clinician validation, or medical validation.
+The repository now claims only the verified 61-response survey evidence and indexed screenshots. It claims no quotations, clinic partnership, clinician validation, or medical validation.
 
 ## Final-course MVP evidence dependencies
 

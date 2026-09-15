@@ -53,6 +53,13 @@ The strongest defensible evidence today is the Android synthetic foundation, cli
 - Criterion 2.1 is now **READY / STRONG EVIDENCE** for final report preparation. This is not an official lecturer score. The survey is exploratory convenience sampling and is not clinical validation or representative population evidence.
 - Q19 qualitative analysis remains pending because raw response text is unavailable. Optional sanitized export and optional clinician feedback remain separate gaps; no clinician validation is claimed.
 
+## Phase 2 UI/UX audit update
+
+- The current Compose/navigation tree is inventoried in `docs/ux/SCREEN-INVENTORY.md`; it records 8 implemented synthetic screens, 12 partial screens, 2 preserved dirty-worktree shells, and 7 planned contract routes.
+- `docs/ux/USER-FLOWS.md`, `UI-STATE-MATRIX.md`, `DESIGN-SYSTEM.md`, `UX-GAPS.md`, and `ACCESSIBILITY-AUDIT.md` document current navigation, state behavior, visual consistency, usability, and static accessibility findings.
+- `FIGMA-SPEC.md`, `FIGMA-COMPONENTS.md`, `FIGMA-PROTOTYPE-FLOW.md`, and `FIGMA-ANDROID-MAPPING.md` define the required design artifact, but no actual Figma file or click-through prototype exists yet.
+- Criterion 2.2 remains **PARTIAL / FIGMA EVIDENCE PENDING**. The design specification and evidence checklist are ready; Figma frames, prototype links, Android screenshots, device accessibility checks, and Figma-to-Android comparison evidence remain pending.
+
 ## Phase 1A evidence update (historical)
 
 - `docs/grading/WORKTREE-BASELINE.md` records the 19 modified tracked files and 10 pre-existing untracked paths observed before Phase 1A edits. They remain uncommitted and are not counted as delivered evidence.

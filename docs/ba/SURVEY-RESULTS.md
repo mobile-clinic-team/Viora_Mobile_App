@@ -10,9 +10,11 @@ The questionnaire was published through Google Forms and completed voluntarily u
 
 ## 3. Sample size and respondent context
 
-The authoritative completed-response count is **61 valid responses**, supported by SURVEY-E02 and the question charts indexed in [`SURVEY-EVIDENCE-INDEX.md`](SURVEY-EVIDENCE-INDEX.md). SURVEY-E03 shows mixed respondent contexts, including students, people who have used clinic services, administrative/reception respondents, nursing/medical respondents, and technology workers. The screenshot does not expose a complete numeric breakdown for every category, so no additional demographic percentages are claimed here.
+The evidence package contains **61 recorded responses**, supported by SURVEY-E02 and the question charts indexed in [`SURVEY-EVIDENCE-INDEX.md`](SURVEY-EVIDENCE-INDEX.md). The Q1 consent chart explicitly shows 60 responses. Therefore, the repository can demonstrate 60 explicit consent responses, while the quantitative charts supplied for Q4, Q7, Q11, Q14, Q15, Q17, and Q18 use a denominator of 61. No raw export proves consent for the 61st response, so 61 is not described as 61 consented respondents.
 
-The Q1 consent chart displays 60 responses because it is a separate question result. It is retained as evidence of the consent item and is not used as the final sample count.
+SURVEY-E03 shows mixed respondent contexts, including students, people who have used clinic services, administrative/reception respondents, nursing/medical respondents, and technology workers. The screenshot does not expose a complete numeric breakdown for every category, so no additional demographic percentages are claimed here.
+
+The Q1 consent chart displays 60 responses because it is a separate question result. It is retained as the explicit-consent evidence and is not silently treated as 61.
 
 ## 4. Key quantitative results
 
@@ -93,6 +95,7 @@ The 93.4% preference for a retry mechanism supports explicit loading, error, ret
 ## 9. Limitations
 
 - This was exploratory convenience sampling.
+- The consent evidence is 60 responses; substantive question charts show 61 recorded responses. The quantitative percentages below preserve the denominator displayed by each supplied chart.
 - The sample is mixed; it is not claimed to represent clinic staff or medical professionals.
 - No clinical validation, clinician sign-off, clinic partnership, or medical efficacy conclusion is claimed.
 - Percentages describe this response set and do not establish population-level inference.

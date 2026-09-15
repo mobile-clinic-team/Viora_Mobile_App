@@ -33,9 +33,15 @@ The next recommended phase is **Phase 1C — hosted CI and clean baseline review
 
 ## Phase 1D.2 finalized survey evidence
 
-The real Google Forms survey is complete. The repository indexes 11 evidence screenshots and uses 61 valid responses as the authoritative count. Quantitative results, seven findings, requirements traceability, a Vietnamese report section, and a figure plan are recorded under docs/ba/. Criterion 2.1 is now **READY / STRONG EVIDENCE** for final report preparation, subject to explicit convenience-sampling limitations. Q19 qualitative analysis remains pending because raw response text is unavailable.
+The real Google Forms survey is complete. The repository indexes 11 evidence screenshots and uses 61 recorded responses as the authoritative count. Quantitative results, seven findings, requirements traceability, a Vietnamese report section, and a figure plan are recorded under docs/ba/. Criterion 2.1 is now **READY / STRONG EVIDENCE** for final report preparation, subject to explicit convenience-sampling limitations. Q19 qualitative analysis remains pending because raw response text is unavailable.
 
 The exact next recommended phase is **Phase 2 — Decisions and backend contract readiness** after any remaining report packaging. The final-course scope now requires the real REST API, persistent database CRUD, authentication, server-side authorization, one real AI use case with evaluation and human review, testing, and staging/deployment evidence. None of those planned capabilities is represented as implemented by the survey evidence.
+
+## Phase 2 UI/UX audit result
+
+The current Compose screens and navigation are now inventoried, and the UI state matrix, Material 3 design-system audit, usability gaps, static accessibility review, Figma frame specification, component plan, click-through flow, Android mapping, fix backlog, and evidence checklist are recorded under `docs/ux/`. Criterion 2.2 remains **PARTIAL / FIGMA EVIDENCE PENDING** because no actual Figma file, prototype link, matching Android screenshot set, device accessibility execution, or Figma comparison exists yet.
+
+The exact next action for the UI/UX workstream is to create the specified Figma file and prototype, then capture the matching synthetic Android states. The broader implementation roadmap remains Phase 2 backend contract readiness after this design artifact is reviewed; no backend, database, authentication, or AI implementation is started by this audit.
 
 ## Phase 1D.0 final-submission scope reconciliation
 

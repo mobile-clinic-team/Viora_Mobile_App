@@ -253,6 +253,12 @@ Criterion 2.1 is **READY / STRONG EVIDENCE** for final report preparation. The s
 
 The survey supports prioritizing patient search, clinical records, doctor/schedule and appointments, recoverable errors, authentication/RBAC, and one bounded human-reviewed AI use case. It does not provide evidence that the real API, persistent database, authentication, AI provider, or deployment already exists; those remain separate implementation gates.
 
+## Phase 2 UI/UX audit
+
+The UI/UX foundation is substantial but the grading artifact is incomplete. The current Compose routes, screens, state coverage, Material 3 tokens, usability issues, accessibility static review, Figma frame set, component plan, prototype flow, Android mapping, and evidence checklist are now documented under `docs/ux/`.
+
+Criterion 2.2 remains **PARTIAL / FIGMA EVIDENCE PENDING**. No actual Figma file, click-through prototype, same-revision Android screenshot set, device accessibility execution, or Figma-to-Android comparison is claimed. The highest-value pre-submission work is to create the specified Figma artifact, capture matching synthetic Android states, and resolve the small high-severity state/recovery gaps.
+
 ### Earlier Phase 1B.1 detail (historical)
 
 - Gradle environment recovery succeeded with a repository-local `GRADLE_USER_HOME`; the declared toolchain was preserved. The `C:\.gradle` target was caused by unset `GRADLE_USER_HOME` combined with Java `user.home=C:\`.

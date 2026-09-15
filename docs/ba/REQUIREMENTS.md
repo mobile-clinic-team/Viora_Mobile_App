@@ -59,4 +59,4 @@ The survey supports the following existing requirements. Requirements without a 
 | FR-018, FR-019 | Q14 retry mechanism preferred by 57/61 (93.4%) | Supports explicit retry, error, and uncertain-outcome behavior. |
 | FR-020 | Q17 privacy concerns are visible; Q18 authorization 60/61 (98.4%) rated 4 or 5 | Supports privacy and scope-clearing behavior, without claiming security validation. |
 
-Priority changes in this phase: FR-013 and FR-016 moved from SHOULD to MUST because the final-course scope requires a real clinical-record CRUD path and human-reviewed AI handoff. This is a transparent scope decision informed by the rubric and survey evidence.
+Priority changes in this phase: FR-013 and FR-016 moved from SHOULD to MUST because the final-course scope requires a real clinical-record CRUD path and human-reviewed AI handoff. Q11 directly supports clinical record viewing; the mutation priority is a separate product/technical final-MVP decision, not a direct survey conclusion about editing.

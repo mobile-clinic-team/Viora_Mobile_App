@@ -1,6 +1,6 @@
 # Evidence-based survey findings
 
-The findings below describe an exploratory convenience sample of 61 valid responses. They show associations and priorities within this response set; they do not prove causation, clinical validity, or population-level prevalence.
+The findings below describe an exploratory convenience sample whose substantive question charts show 61 recorded responses. The Q1 chart explicitly shows 60 consent responses, so the repository does not claim 61 consented respondents. The findings show associations and priorities within this response set; they do not prove causation, clinical validity, or population-level prevalence.
 
 ## FINDING-01 — Appointment tracking and waiting are significant reported pain points
 

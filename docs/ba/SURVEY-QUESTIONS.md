@@ -52,7 +52,7 @@ This anonymous university survey asks about appointment and patient-workflow exp
 | SURVEY-Q15 | Theo bạn, AI có hữu ích nếu được dùng để tóm tắt thông tin dài thành nội dung ngắn gọn cho nhân viên y tế xem xét không? | As shown in the completed Google Form | Measure perceived usefulness of AI summarization. | See SURVEY-RESULTS.md and SURVEY-FINDINGS.md |
 | SURVEY-Q16 | Question wording not transcribed in repository evidence. | As shown in the completed Google Form | Question wording and results are not claimed without source evidence. | See SURVEY-RESULTS.md and SURVEY-FINDINGS.md |
 
-## Section 6 — Privacy and security expectations
+## Section 6 - AI concerns and authorization
 
 | ID | Question | Type | Purpose | Informs |
 |---|---|---|---|---|

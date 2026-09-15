@@ -1,6 +1,6 @@
 # Survey evidence index
 
-Survey evidence boundary: Google Forms screenshots collected on 2026-09-16. The authoritative completed-response count for the survey is **61 valid responses**. The Q1 consent chart displays 60 responses, while the Forms summary and the question charts used below display 61; the consent chart is retained as supporting evidence and is not used to reduce the final sample count.
+Survey evidence boundary: Google Forms screenshots collected on 2026-09-16. The evidence shows **61 recorded survey responses** in the Forms summary and substantive question charts. The Q1 consent chart displays 60 responses. No raw export proves explicit consent for the 61st response, so this index distinguishes 61 recorded responses from 60 explicitly evidenced consent responses and does not claim that all 61 consented.
 
 No names, email addresses, patient records, PHI, or direct clinical identifiers are visible in the indexed screenshots. Q19 contains truncated free-text chart labels; it is not used for qualitative claims without the raw response text.
 

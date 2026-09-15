@@ -10,7 +10,7 @@ Collect real evidence about clinic-team workflow pain points, mobile usefulness,
 - **Preferred audience:** at least three respondents with direct clinic operations or clinical experience, if realistically reachable.
 - **Minimum target:** 15 complete responses.
 - **Preferred target:** 20–30 complete responses.
-- **Actual completed sample:** 61 valid responses, exceeding the minimum target. Whether the preferred direct-clinic representation was achieved is not claimed from the available screenshots.
+- **Actual completed sample:** 61 recorded responses, exceeding the minimum target. The Q1 consent chart explicitly shows 60 responses; the repository does not claim consent for the 61st response without a raw export. Whether the preferred direct-clinic representation was achieved is not claimed from the available screenshots.
 - Respondents who cannot access healthcare workflows may answer a short familiarity question; their responses must be analyzed separately rather than presented as clinic-worker evidence.
 
 ## Recruitment and collection
