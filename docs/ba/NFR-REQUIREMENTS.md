@@ -23,3 +23,13 @@ These requirements describe both the current client baseline and the target fina
 - NFR-001, NFR-003, NFR-005, NFR-010, NFR-011, and NFR-012 require real server/API evidence before they can be treated as complete.
 - NFR-002, NFR-006, NFR-007, NFR-008, NFR-009, and NFR-013 retain current Android baseline evidence but need live-path, device, accessibility, or deployment evidence as applicable.
 - No NFR is being marked `IMPLEMENTED` merely because its contract or client-side test exists.
+
+## Survey support
+
+| NFR | Survey evidence | Implication |
+|---|---|---|
+| NFR-001, NFR-003, NFR-012 | Q18: 60/61 (98.4%) rated role/permission access 4 or 5 | Authentication, server-side authorization, and the API boundary should remain final-MVP gates. |
+| NFR-005, NFR-009 | Q14: 57/61 (93.4%) preferred some retry mechanism | Failures, retries, timeouts, and uncertain outcomes need explicit recovery behavior. |
+| NFR-006, NFR-007 | Q11: error guidance/handling 13/61 (21.3%); Q14 retry preference 57/61 (93.4%) | Usability and accessibility work should make recovery understandable and actionable. |
+| NFR-010, NFR-011 | Q15: 53/61 (86.9%) rated AI usefulness 4 or 5; Q17 context concern 28/61 (45.9%) and incorrect-information concern 27/61 (44.3%) | AI provenance, evaluation, human review, versioning, and safe handoff are required. |
+| NFR-002, NFR-004, NFR-008, NFR-013 | No direct quantitative support beyond the survey method and product scope | These remain architecture, privacy, delivery, or baseline requirements; no survey claim is added. |

@@ -16,10 +16,10 @@ Status describes the current repository, not a promise of production capability.
 | FR-010 | Appointment creation | Create an appointment from authorized patient, doctor, location, and interval inputs. | Receptionist, doctor, authorized staff | MUST | Exact allowlist, policy, relationship, conflict, idempotency, and receipt behavior are verified. | PARTIAL |
 | FR-011 | Appointment lifecycle | Reschedule, confirm, cancel, check in, start, complete, or no-show only through allowed transitions. | Authorized staff | MUST | Invalid state, stale version, permission, conflict, and unknown outcome are handled without duplicate commands. | PARTIAL |
 | FR-012 | Clinical context reads | Open authorized encounter history and existing clinical records. | Doctor, nurse, authorized clinical actor | MUST | Current workspace, permission, relationship, ID, and epoch are checked before content display. | PARTIAL |
-| FR-013 | Clinical record mutation | Create, edit, review, finalize, reopen, or amend records under clinical policy. | Authorized clinical actor | SHOULD | Server policy, immutable versions, OCC, assurance, audit, and recovery are verified. | NOT STARTED |
+| FR-013 | Clinical record mutation | Create, edit, review, finalize, reopen, or amend records under clinical policy. | Authorized clinical actor | MUST | Server policy, immutable versions, OCC, assurance, audit, and recovery are verified for the selected clinical-record path. | NOT STARTED |
 | FR-014 | Assistant conversation | Create an immutable, authorized assistant context and exchange bounded advisory messages. | Authorized assistant user | MUST | Context, workspace, owner, permission, expiry, output limits, provenance, and safe failures are enforced. | PARTIAL |
 | FR-015 | AI draft lifecycle | Generate, inspect, review, edit, reject, and recover a draft for an existing DRAFT target. | Authorized clinician | MUST | Draft target/version/provenance remain bound; manual workflow remains available on failure. | PARTIAL |
-| FR-016 | Assured clinical handoff | Require fresh human assurance and verify an atomic AI handoff into an existing DRAFT record. | Authorized approving clinician | SHOULD | Exact target tokens, assurance, receipt, record version, and audit evidence are verified server-side. | PARTIAL |
+| FR-016 | Assured clinical handoff | Require fresh human assurance and verify an atomic AI handoff into an existing DRAFT record. | Authorized approving clinician | MUST | Exact target tokens, assurance, receipt, record version, and audit evidence are verified server-side. | PARTIAL |
 | FR-017 | Authorization safety | Use effective role, grant, workspace, relationship, state, and policy checks for protected actions. | System/server | MUST | Unknown permissions deny; UI cannot create authority; denied actions dispatch no protected request. | PARTIAL |
 | FR-018 | Explicit UI states | Distinguish loading, empty, failure, unavailable, denied, stale, and uncertain outcome. | All users | MUST | Each state has a truthful message and appropriate retry/review action. | IMPLEMENTED |
 | FR-019 | Operation recovery | Persist safe receipt metadata and reconcile uncertain operations without replaying a command body. | Signed-in staff | MUST | Timeout becomes unknown; outcome check/close follows operation contract; duplicate submission is prevented. | PARTIAL |
@@ -39,3 +39,24 @@ These are target acceptance obligations, not current implementation claims. `PLA
 ## Requirement status caveat
 
 `PARTIAL` commonly means the client and synthetic fixture exist while production server enforcement or deployed integration is missing. It must not be reported as a completed production feature.
+
+## Survey evidence mapping
+
+The survey supports the following existing requirements. Requirements without a direct survey question retain their product, security, or architecture basis and are not given invented survey support.
+
+| Requirement | Survey support | Interpretation |
+|---|---|---|
+| FR-001, FR-002 | No direct survey question; baseline safety evidence | Current implementation and secure startup are architectural foundations. |
+| FR-003 | Q11: login/authorization 23/61 (37.7%); Q18: authorization 60/61 (98.4%) rated 4 or 5 | Authentication is a prioritized first-version capability and authorization is a strong expectation. |
+| FR-004 | Q18: 60/61 (98.4%) rated role/permission access 4 or 5 | Supports explicit workspace and role enforcement. |
+| FR-005, FR-006 | Q7: patient lookup 16/61 (26.2%); Q11: patient search 28/61 (45.9%) and patient detail 23/61 (37.7%) | Supports patient search and authorized detail as core workflow capabilities. |
+| FR-007 | Q7: reducing repetitive entry 7/61 (11.5%) | Provides limited support for future demographic mutation; it remains SHOULD/PLANNED. |
+| FR-008 | Q4 schedule difficulty 31/61 (50.8%); Q11 doctor/schedule viewing 24/61 (39.3%) | Supports schedule information as a core MVP capability. |
+| FR-009, FR-010, FR-011 | Q4 appointment/schedule difficulty 31/61 (50.8%); Q7 appointment management 16/61 (26.2%); Q11 appointment management 21/61 (34.4%) | Supports real appointment reads, CRUD, lifecycle, and conflict handling. |
+| FR-012, FR-013 | Q7 authorized history access 7/61 (11.5%); Q11 clinical record viewing 26/61 (42.6%) | Supports the selected clinical record path; FR-013 is MUST for final-course CRUD scope. |
+| FR-014, FR-015 | Q11 AI summarization/draft support 13/61 (21.3%); Q15 ratings 4 or 5 from 53/61 (86.9%) | Supports one focused real AI workflow after core access flows. |
+| FR-016, FR-017 | Q17 insufficient context 28/61 (45.9%) and incorrect information 27/61 (44.3%); Q18 60/61 (98.4%) rated authorization 4 or 5 | Supports human review, safe handoff, and server-side authorization. |
+| FR-018, FR-019 | Q14 retry mechanism preferred by 57/61 (93.4%) | Supports explicit retry, error, and uncertain-outcome behavior. |
+| FR-020 | Q17 privacy concerns are visible; Q18 authorization 60/61 (98.4%) rated 4 or 5 | Supports privacy and scope-clearing behavior, without claiming security validation. |
+
+Priority changes in this phase: FR-013 and FR-016 moved from SHOULD to MUST because the final-course scope requires a real clinical-record CRUD path and human-reviewed AI handoff. This is a transparent scope decision informed by the rubric and survey evidence.

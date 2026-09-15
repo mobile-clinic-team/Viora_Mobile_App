@@ -2,6 +2,17 @@
 
 These stories describe the target final-course MVP. Current synthetic/local behavior is evidence for the client foundation only. Stories that require authentication, persistence, a live API, or real AI remain incomplete until those services are implemented and verified.
 
+## Survey support
+
+| Stories | Survey evidence |
+|---|---|
+| US-003 | Q7 patient lookup 16/61 (26.2%); Q11 patient search 28/61 (45.9%) and patient detail 23/61 (37.7%). |
+| US-004, US-005 | Q4 schedule difficulty 31/61 (50.8%); Q7 appointment management 16/61 (26.2%); Q11 appointment management 21/61 (34.4%); Q14 retry mechanism 57/61 (93.4%). |
+| US-006 | Q11 clinical record viewing 26/61 (42.6%). |
+| US-007, US-010 | Q15 AI usefulness rating 4 or 5 from 53/61 (86.9%); Q17 insufficient context 28/61 (45.9%) and incorrect information 27/61 (44.3%). |
+| US-002, US-009, US-011 | Q11 login/authorization 23/61 (37.7%); Q18 authorization importance rated 4 or 5 by 60/61 (98.4%). |
+| US-001, US-008, US-012 | Q14 retry preference and Q18 authorization support the broader safety, recovery, and evidence stories. |
+
 ## US-001 — Start securely
 
 As a clinic staff member, I want the app to start in a neutral state so that protected information is not exposed during restore.

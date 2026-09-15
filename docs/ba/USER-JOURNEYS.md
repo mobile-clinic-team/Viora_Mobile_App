@@ -1,6 +1,6 @@
 # User journeys
 
-The journeys below separate current synthetic demonstrations from planned production behavior. Survey validation is pending real evidence.
+The journeys below separate current synthetic demonstrations from planned production behavior. Survey evidence is recorded in [SURVEY-RESULTS.md](SURVEY-RESULTS.md); it is exploratory convenience-sample evidence, not clinical validation.
 
 ## J-01 Authentication and workspace selection
 

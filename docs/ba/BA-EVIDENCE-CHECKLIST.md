@@ -13,19 +13,21 @@ Criterion focus: **2.1 Idea and problem analysis**. Statuses are deliberately co
 | Requirements traceability | READY | [TRACEABILITY-MATRIX.md](TRACEABILITY-MATRIX.md), linked to screens, components, tests, and future API. |
 | Survey objective and method | READY | [SURVEY-PLAN.md](SURVEY-PLAN.md), including consent, recruitment, analysis, and limitations. |
 | Google Form questionnaire | READY | [SURVEY-QUESTIONS.md](SURVEY-QUESTIONS.md), ready to transfer to Google Forms. |
-| Survey form screenshot | PENDING REAL SURVEY | Capture the final form and consent text after publication. |
-| Real response count | PENDING REAL SURVEY | Capture Google Forms response count and dates; do not invent a number. |
-| Respondent context chart | PENDING REAL SURVEY | Export or screenshot Q01–Q03 charts. |
-| Problem/findings charts | PENDING REAL SURVEY | Capture Q04–Q07 charts and actual theme counts. |
-| Feature-priority chart | PENDING REAL SURVEY | Capture Q08–Q10 results using the predeclared analysis method. |
-| Mobile usability chart | PENDING REAL SURVEY | Capture Q11–Q13 results. |
-| AI perception chart | PENDING REAL SURVEY | Capture Q14–Q16 results and limitations. |
-| Privacy/security chart | PENDING REAL SURVEY | Capture Q17–Q18 results. |
-| Requirement derivation | PENDING REAL SURVEY | Update the results template and requirement decisions with actual evidence. |
+| Survey form screenshot | READY | SURVEY-E01 indexes the published Google Forms title, purpose, consent, time, and no-PHI instructions. |
+| Real response count | READY | SURVEY-E02 and the question charts show 61 responses used as the authoritative final count. |
+| Respondent context chart | READY | SURVEY-E03 records the visible mixed respondent contexts without inventing a complete demographic breakdown. |
+| Problem/findings charts | READY | SURVEY-E04 and SURVEY-E05 support Q4 and Q7 quantitative findings; Q19 qualitative analysis remains pending. |
+| Feature-priority chart | READY | SURVEY-E06 records Q11 feature priorities with counts and percentages. |
+| Mobile usability chart | READY | SURVEY-E07 records Q14 retry/error expectations. |
+| AI perception chart | READY | SURVEY-E08 and SURVEY-E09 record Q15 usefulness and Q17 concerns. |
+| Privacy/security chart | READY | SURVEY-E10 records Q18 authorization importance. |
+| Requirement derivation | READY | SURVEY-RESULTS.md, SURVEY-FINDINGS.md, and the traceability matrix connect findings to requirements. |
 | Product-scope decision | READY | Present the scope and exclusions; revise only if research supports a change. |
-| Clinical/user validation | MISSING | Obtain genuine relevant feedback if available; do not claim clinician validation without it. |
+| Raw CSV/Sheet export | PENDING OPTIONAL | Preserve a sanitized aggregate export if it is available; do not add raw identifiers or PHI. |
+| Q19 qualitative analysis | PENDING RAW RESPONSES | Obtain the raw text or a sanitized export before clustering or quoting free-text answers. |
+| Clinical/user validation | OPTIONAL / NOT CLAIMED | Not required to close criterion 2.1 unless the project claims clinical validation. No clinician validation is claimed. |
 
-No survey respondents, results, percentages, quotations, partnership, or medical validation are claimed in this repository.
+The repository now claims only the verified 61-response survey results and indexed screenshots. It claims no quotations, clinic partnership, clinician validation, or medical validation.
 
 ## Final-course MVP evidence dependencies
 

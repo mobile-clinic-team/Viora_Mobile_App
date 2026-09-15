@@ -10,6 +10,7 @@ Collect real evidence about clinic-team workflow pain points, mobile usefulness,
 - **Preferred audience:** at least three respondents with direct clinic operations or clinical experience, if realistically reachable.
 - **Minimum target:** 15 complete responses.
 - **Preferred target:** 20–30 complete responses.
+- **Actual completed sample:** 61 valid responses, exceeding the minimum target. Whether the preferred direct-clinic representation was achieved is not claimed from the available screenshots.
 - Respondents who cannot access healthcare workflows may answer a short familiarity question; their responses must be analyzed separately rather than presented as clinic-worker evidence.
 
 ## Recruitment and collection
@@ -40,4 +41,4 @@ The opening text must state that participation is voluntary, respondents may sto
 - An anonymized CSV or summary table retained privately and referenced by date.
 - A dated analysis note linking findings to requirement IDs.
 
-Until collection occurs, all results are **PENDING REAL EVIDENCE**.
+Collection is complete for the current evidence package. Quantitative results are recorded in [SURVEY-RESULTS.md](SURVEY-RESULTS.md); Q19 qualitative analysis remains pending raw response text.

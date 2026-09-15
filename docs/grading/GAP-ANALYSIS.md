@@ -245,11 +245,13 @@ Fresh same-revision evidence is now:
 
 The testing gap is narrowed but not closed. Remaining evidence gaps are hosted CI, connected-device/accessibility execution, clean logical commit/review of the preserved worktree, production backend/API/authentication, real AI integration, and release evidence. The exact failure inventory and commit grouping are in [JVM-FAILURE-TRIAGE.md](JVM-FAILURE-TRIAGE.md).
 
-## Phase 1D business-analysis preparation
+## Phase 1D.2 finalized survey evidence
 
-The business-analysis gap is now organized but not closed. `docs/ba/` contains a truthful product summary, role-derived personas, problem statement, user journeys, MoSCoW scope, FR/NFR requirements, user stories, survey plan/questions/results template, traceability matrix, and evidence checklist. The survey questions are ready to transfer to Google Forms and are written to avoid leading respondents or collecting PHI.
+The business-analysis evidence gap for criterion 2.1 is substantially closed. docs/ba/ now indexes the 61-response Google Forms evidence, records the supplied quantitative results, documents seven findings, maps findings to existing requirements and user stories, and provides a Vietnamese report-ready section and figure plan.
 
-Criterion 2.1 remains **PARTIAL / PENDING EVIDENCE**. Real response count, respondent context, charts, findings, requirement changes, and any clinician or clinic validation remain pending. The next action is for the student to publish the approved form, collect at least 15 genuine responses, export aggregate results, and update `SURVEY-RESULTS-TEMPLATE.md` with actual counts and limitations.
+Criterion 2.1 is **READY / STRONG EVIDENCE** for final report preparation. The survey is exploratory convenience sampling, not statistically representative or clinical validation. A sanitized raw export and Q19 qualitative analysis remain pending; optional clinician feedback is not required unless the project claims clinical validation.
+
+The survey supports prioritizing patient search, clinical records, doctor/schedule and appointments, recoverable errors, authentication/RBAC, and one bounded human-reviewed AI use case. It does not provide evidence that the real API, persistent database, authentication, AI provider, or deployment already exists; those remain separate implementation gates.
 
 ### Earlier Phase 1B.1 detail (historical)
 
