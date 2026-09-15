@@ -15,4 +15,3 @@
 | NFR-011 | Concurrency | Mutations use strong current versions and idempotency to prevent lost updates or duplicate clinical actions. | Stale ETag returns 412; duplicate operation key returns one receipt; uncertain response is reconciled. | PARTIAL; client/fixture tests exist, backend absent. |
 | NFR-012 | Network/data boundary | Android communicates with services through an API boundary and never directly with PostgreSQL. | Architecture review finds no database driver/credential in Android; service calls use declared HTTPS API contracts. | PARTIAL; client boundary exists, deployed API absent. |
 | NFR-013 | Compatibility | The declared toolchain remains reproducible for the supported dev variant. | Wrapper Gradle 9.6.0, AGP 9.4.0, Kotlin 2.3.10, SDK 36, and Java target 17 execute the documented checks. | PARTIAL; local evidence green, hosted CI pending. |
-

@@ -19,4 +19,3 @@ The matrix connects current product hypotheses and repository evidence to future
 - Future API routes are taken from `docs/API-SPEC.md`; they are not evidence of a deployed service.
 - Survey cells are intentionally pending until genuine responses exist.
 - No traceability row claims production database, authentication, AI, audit, or clinical validation evidence.
-

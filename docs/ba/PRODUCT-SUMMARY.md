@@ -1,6 +1,6 @@
 # Viora product summary
 
-Audit date: 2026-09-16  
+Audit date: 2026-09-16
 Evidence boundary: branch `chore/android-baseline-stabilization`, evidence commits `4d6af89`, `ec12836`, and `c49dcf6`, with preserved dirty application work.
 
 ## Product purpose
@@ -44,4 +44,3 @@ The preserved dirty worktree contains a patient-facing shell, administrator shel
 - A production release artifact or hosted CI result.
 - Real patient/PHI data, clinician validation, survey responses, or clinic partnership evidence.
 - Autonomous diagnosis or autonomous clinical decision-making.
-

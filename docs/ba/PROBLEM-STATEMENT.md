@@ -53,4 +53,3 @@ Viora does not claim to be a hospital information system, electronic health reco
 ## Clinical and safety limitations
 
 Clinical truth, role grants, workspace isolation, record completeness, audit, retention, and assurance must be enforced by a future server. The current FakeBackend and synthetic AI are development fixtures only. No real patient or PHI data may be used for development, survey responses, screenshots, or demonstrations. A clinician must review any AI-generated content; AI approval and clinical finalization remain separate actions.
-

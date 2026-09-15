@@ -56,4 +56,3 @@ This anonymous university survey asks about appointment and patient-workflow exp
 | SURVEY-Q19 | Optional: What would make you stop using a clinic mobile tool? Do not include confidential information. | Optional paragraph | Collect negative requirements and trust barriers. | Scope, NFRs, derived requirements |
 
 No responses are included in this file. Results remain **PENDING REAL EVIDENCE**.
-

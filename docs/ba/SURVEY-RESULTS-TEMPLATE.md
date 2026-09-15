@@ -6,9 +6,9 @@ Status: **PENDING REAL EVIDENCE**
 
 PENDING
 
-Complete responses: PENDING  
-Excluded/incomplete responses: PENDING  
-Collection dates: PENDING  
+Complete responses: PENDING
+Excluded/incomplete responses: PENDING
+Collection dates: PENDING
 Recruitment method: PENDING
 
 ## Respondent demographics/context
@@ -50,4 +50,3 @@ PENDING REAL DATA
 PENDING REAL DATA
 
 Record sample size, recruitment bias, direct clinic representation, incomplete responses, and any difference between general respondents and workflow-experienced respondents.
-

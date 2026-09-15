@@ -41,4 +41,3 @@ The opening text must state that participation is voluntary, respondents may sto
 - A dated analysis note linking findings to requirement IDs.
 
 Until collection occurs, all results are **PENDING REAL EVIDENCE**.
-

@@ -57,4 +57,3 @@ These personas are derived from the four staff roles in `docs/PRODUCT-SPEC.md`. 
 ## Excluded or unresolved roles
 
 `PATIENT` and `SUPER_ADMIN` appear in the mobile specification as excluded from ordinary staff workflows. The preserved worktree contains an experimental patient shell, but no final patient persona is accepted until the product owner reconciles it with the documented MVP exclusion.
-

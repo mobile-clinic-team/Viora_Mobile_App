@@ -59,4 +59,3 @@ The submission must use synthetic accounts and fictional records only. A single 
 ### WON'T FOR THIS RELEASE
 
 - Full hospital modules, offline writes, autonomous clinical decisions, production AI without approved policy, and unbounded administration.
-

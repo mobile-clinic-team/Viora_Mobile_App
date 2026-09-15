@@ -28,4 +28,3 @@ Status describes the current repository, not a promise of production capability.
 ## Requirement status caveat
 
 `PARTIAL` commonly means the client and synthetic fixture exist while production server enforcement or deployed integration is missing. It must not be reported as a completed production feature.
-

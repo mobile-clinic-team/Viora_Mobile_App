@@ -71,4 +71,3 @@ The journeys below separate current synthetic demonstrations from planned produc
 - **Alternative/error flow:** Forced expiry clears immediately; unresolved operation is not replayed automatically; stale late results are discarded.
 - **Expected outcome:** No old workspace or protected back stack is reused after scope invalidation.
 - **Evidence:** `PrivacyControllerTest`, `SessionCoordinatorTest`, `OperationCoordinatorTest`.
-

@@ -26,4 +26,3 @@ Criterion focus: **2.1 Idea and problem analysis**. Statuses are deliberately co
 | Clinical/user validation | MISSING | Obtain genuine relevant feedback if available; do not claim clinician validation without it. |
 
 No survey respondents, results, percentages, quotations, partnership, or medical validation are claimed in this repository.
-
