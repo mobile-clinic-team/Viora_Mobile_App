@@ -13,3 +13,9 @@ captures/
 .gradle-clean/
 .gradle-user-home/
 gradle-tmp/
+
+# Repository-local recovery homes; never commit machine-specific caches or keys.
+.gradle-local/
+.android-local/
+.android-recovery-*/
+hs_err_pid*.log
