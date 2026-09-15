@@ -245,6 +245,12 @@ Fresh same-revision evidence is now:
 
 The testing gap is narrowed but not closed. Remaining evidence gaps are hosted CI, connected-device/accessibility execution, clean logical commit/review of the preserved worktree, production backend/API/authentication, real AI integration, and release evidence. The exact failure inventory and commit grouping are in [JVM-FAILURE-TRIAGE.md](JVM-FAILURE-TRIAGE.md).
 
+## Phase 1D business-analysis preparation
+
+The business-analysis gap is now organized but not closed. `docs/ba/` contains a truthful product summary, role-derived personas, problem statement, user journeys, MoSCoW scope, FR/NFR requirements, user stories, survey plan/questions/results template, traceability matrix, and evidence checklist. The survey questions are ready to transfer to Google Forms and are written to avoid leading respondents or collecting PHI.
+
+Criterion 2.1 remains **PARTIAL / PENDING EVIDENCE**. Real response count, respondent context, charts, findings, requirement changes, and any clinician or clinic validation remain pending. The next action is for the student to publish the approved form, collect at least 15 genuine responses, export aggregate results, and update `SURVEY-RESULTS-TEMPLATE.md` with actual counts and limitations.
+
 ### Earlier Phase 1B.1 detail (historical)
 
 - Gradle environment recovery succeeded with a repository-local `GRADLE_USER_HOME`; the declared toolchain was preserved. The `C:\.gradle` target was caused by unset `GRADLE_USER_HOME` combined with Java `user.home=C:\`.

@@ -46,7 +46,14 @@ This is a baseline audit, not a grade claim. “Implemented” means the behavio
 
 The strongest defensible evidence today is the Android synthetic foundation, client architecture, contract quality, and development tests. The largest score and delivery risks are the absence of a backend/database implementation, unavailable production authentication, absence of real AI integration/safety evidence, no verified CI run or release path, and unvalidated current worktree changes. No criterion should be presented as fully complete until its missing evidence column is closed.
 
-## Phase 1A evidence update
+## Phase 1D business-analysis evidence update
+
+- Added a current-versus-planned product summary, problem statement, four role-derived personas, user journeys, achievable scope, functional and non-functional requirements, user stories, MoSCoW priorities, survey plan, Google Forms-ready questions, results template, traceability matrix, and criterion 2.1 evidence checklist under `docs/ba/`.
+- Criterion 2.1 remains **PARTIAL / PENDING EVIDENCE**. The repository now has a structured research instrument and traceability plan, but no real respondents, results, percentages, quotations, clinic partnership, or medical validation are claimed.
+- Requirements use stable IDs and link current client evidence to future API work without presenting planned backend, database, authentication, or AI provider behavior as implemented.
+- The preserved patient/admin shell is explicitly identified as worktree behavior requiring product-owner scope reconciliation; it is not silently added to the approved staff MVP.
+
+## Phase 1A evidence update (historical)
 
 - `docs/grading/WORKTREE-BASELINE.md` records the 19 modified tracked files and 10 pre-existing untracked paths observed before Phase 1A edits. They remain uncommitted and are not counted as delivered evidence.
 - `docs/grading/TOOLCHAIN-BASELINE.md` reconciles the current configuration: Gradle 9.6.0, AGP 9.4.0, Kotlin 2.3.10, Java/Kotlin target 17, and JBR/JDK 21.0.11 observed on the audit machine.

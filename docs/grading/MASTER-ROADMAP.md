@@ -31,6 +31,12 @@ Phase 1B.2 recovered the preserved-worktree JVM baseline. Fresh local evidence i
 
 The next recommended phase is **Phase 1C — hosted CI and clean baseline review**. It should verify `.github/workflows/android-baseline.yml`, split and review the logical change groups, inspect the dependency verification metadata, and obtain device/accessibility evidence. It must remain an evidence/Git baseline phase; backend, database, authentication, and AI work stay closed until that review is complete.
 
+## Phase 1D business-analysis result
+
+Phase 1D prepared the real user-research and requirements evidence package without changing Android production code. The product summary, problem statement, role-derived personas, journeys, scope, FR/NFR requirements, user stories, survey plan/questions/results template, traceability matrix, and criterion 2.1 checklist are in `docs/ba/`. Criterion 2.1 remains partial until genuine survey responses and analysis exist.
+
+The exact next recommended phase is **Phase 1D.1 — Execute the real survey and capture evidence**. Publish the neutral Google Form, collect at least 15 genuine responses, preserve the response count and aggregate charts, analyze limitations, and update the results template. Do not fabricate results or begin backend/database/authentication/AI implementation as a substitute for research evidence.
+
 ## Ordering principles
 
 1. Make claims reproducible before adding more features.
