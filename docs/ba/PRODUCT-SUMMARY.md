@@ -26,14 +26,35 @@ Viora is a workflow/support tool. It does not claim to diagnose patients, replac
 
 The preserved dirty worktree contains a patient-facing shell, administrator shell, route authorization, UI components, and a Phase 1 smoke test. These are source-visible worktree behavior, but they are not yet a clean reviewed product decision. `PRODUCT-SPEC.md` explicitly excludes patient self-service from the smallest MVP and limits administration; those worktree additions must be reconciled before being called final scope.
 
-## Planned or proposed
+## Target final-course MVP (not yet implemented)
+
+The final course submission is expected to extend the current Android foundation with one small, demonstrable real vertical slice. The target includes:
+
+- A real REST API used by Android through repository interfaces.
+- Persistent database storage for grading-relevant resources, with real CRUD operations.
+- Authentication plus server-side workspace and role authorization.
+- Patients, doctors/schedule data, appointments, and the clinical record workflow needed by the selected demonstration path.
+- Honest loading, empty, error, conflict, and uncertain-outcome handling across the live path.
+- One valuable real AI use case through a backend-mediated provider integration, with prompt/model design, provenance, evaluation, limitations, and human review before any clinical draft handoff.
+- Tests and staging/deployment evidence where feasible.
+
+This is a target, not current implementation evidence. It must be delivered incrementally and remain limited to a coherent course-sized workflow.
+
+## Planned implementation work
 
 - Production OIDC/browser authentication, token exchange, refresh, revocation, and verified callback configuration.
 - A backend API with server-side role, workspace, field, relationship, concurrency, idempotency, and audit enforcement.
 - PostgreSQL schema, migrations, backup/recovery, and a deployed non-PHI test environment.
-- A real backend-mediated AI provider gateway with bounded context, provenance, retention, safety evaluation, and human approval.
+- A real backend-mediated AI provider gateway with bounded context, provenance, retention, safety evaluation, prompt/model documentation, and human approval.
 - Complete server-backed patient mutations, appointment policy, encounter mutations, clinical record lifecycle, and reliable operation recovery.
 - Hosted CI, device/accessibility validation, release signing custody, deployment, monitoring, and rollback evidence.
+
+## Future post-course work
+
+- Autonomous diagnosis or autonomous treatment decisions.
+- A complete hospital information system and enterprise-scale administration.
+- Billing, insurance, laboratory, pharmacy, prescribing, and claims modules.
+- Complex offline synchronization, patient self-service, and production multi-region/high-availability architecture.
 
 ## Not implemented or not established
 

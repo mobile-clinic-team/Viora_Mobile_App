@@ -26,3 +26,18 @@ Criterion focus: **2.1 Idea and problem analysis**. Statuses are deliberately co
 | Clinical/user validation | MISSING | Obtain genuine relevant feedback if available; do not claim clinician validation without it. |
 
 No survey respondents, results, percentages, quotations, partnership, or medical validation are claimed in this repository.
+
+## Final-course MVP evidence dependencies
+
+These items are required for the broader final submission but are not claimed as current evidence:
+
+| Evidence item | Status | Required proof |
+|---|---|---|
+| Real REST API | MISSING | Deployed or reviewable service, executable contract, authentication, authorization, and error mapping. |
+| Persistent database and CRUD | MISSING | Schema/migrations plus real create, read, update, and delete tests for the selected resources. |
+| Production authentication | MISSING | Real non-PHI environment showing login, token/session handling, refresh, revoke, and failure behavior. |
+| Workspace/role enforcement | MISSING | Server-side isolation and denied-action tests across at least two synthetic workspaces or equivalent fixtures. |
+| Real AI integration | MISSING | Provider-mediated use case, prompt/model documentation, evaluation, provenance, limitations, and human review evidence. |
+| Testing and deployment | PENDING IMPLEMENTATION | Same-revision client/service tests, staging or deployment evidence where feasible, and disclosed limitations. |
+
+`FakeBackend` and `SyntheticAssistantBackend` may continue to support previews and tests, but they cannot satisfy these final-course implementation evidence items.

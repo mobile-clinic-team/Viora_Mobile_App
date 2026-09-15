@@ -37,6 +37,10 @@ Phase 1D prepared the real user-research and requirements evidence package witho
 
 The exact next recommended phase is **Phase 1D.1 — Execute the real survey and capture evidence**. Publish the neutral Google Form, collect at least 15 genuine responses, preserve the response count and aggregate charts, analyze limitations, and update the results template. Do not fabricate results or begin backend/database/authentication/AI implementation as a substitute for research evidence.
 
+## Phase 1D.0 final-submission scope reconciliation
+
+The BA scope now separates the synthetic/local current implementation from the target final-course MVP. The target MVP includes a small real REST API, persistent database CRUD, authentication, server-side workspace/role authorization, the patient/appointment/clinical workflow needed for the demonstration, one real provider-backed AI use case with human review and evaluation, testing, and staging/deployment evidence where feasible. These remain planned or not started and must not be reported as implemented. Hospital-wide expansion, autonomous clinical decisions, billing, complex offline synchronization, and unnecessary patient self-service remain outside the course release.
+
 ## Ordering principles
 
 1. Make claims reproducible before adding more features.

@@ -25,6 +25,17 @@ Status describes the current repository, not a promise of production capability.
 | FR-019 | Operation recovery | Persist safe receipt metadata and reconcile uncertain operations without replaying a command body. | Signed-in staff | MUST | Timeout becomes unknown; outcome check/close follows operation contract; duplicate submission is prevented. | PARTIAL |
 | FR-020 | Privacy and logout | Cover sensitive UI on background, invalidate scope on change, and clear protected state on logout. | All signed-in users | MUST | Timeout, logout, expiry, and workspace change cannot restore old protected back stack or data. | IMPLEMENTED |
 
+## Final-course target mapping
+
+The current repository is synthetic/local. The target final-course MVP requires the following planned production capabilities to be completed before submission:
+
+- **Real service boundary:** FR-003, FR-004, and FR-017 require production authentication and server-enforced workspace/role authorization.
+- **Persistent CRUD:** FR-005 through FR-013 cover the selected patient, doctor/schedule, appointment, encounter, and clinical-record path. At least one coherent resource path must demonstrate real create, read, update, and delete behavior through the API and database, subject to the documented clinical policy.
+- **Real AI:** FR-014 through FR-016 require a valuable provider-backed use case, documented prompt/model design, evaluation, limitations, provenance, and human review before clinical draft handoff.
+- **Operational evidence:** FR-018 through FR-020 require truthful error handling, recovery, privacy, and logout behavior on the live path, supported by tests and staging/deployment evidence where feasible.
+
+These are target acceptance obligations, not current implementation claims. `PLANNED` and `NOT STARTED` remain incomplete; `PARTIAL` means that only the client contract, synthetic implementation, or test support is currently available.
+
 ## Requirement status caveat
 
 `PARTIAL` commonly means the client and synthetic fixture exist while production server enforcement or deployed integration is missing. It must not be reported as a completed production feature.

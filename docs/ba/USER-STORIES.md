@@ -1,5 +1,7 @@
 # Focused user stories
 
+These stories describe the target final-course MVP. Current synthetic/local behavior is evidence for the client foundation only. Stories that require authentication, persistence, a live API, or real AI remain incomplete until those services are implemented and verified.
+
 ## US-001 — Start securely
 
 As a clinic staff member, I want the app to start in a neutral state so that protected information is not exposed during restore.
@@ -68,7 +70,7 @@ As an authorized clinician, I want to ask an advisory assistant about a fixed co
 
 - **Given** assistant policy and context access are valid
 - **When** I send a bounded question
-- **Then** the response is advisory, provenance-aware where required, and never presented as an autonomous clinical decision.
+- **Then** a real backend-mediated model returns a bounded, provenance-aware advisory response where required, with documented prompt/model behavior and limitations, and it is never presented as an autonomous clinical decision.
 
 ## US-008 — See clear states
 
@@ -97,7 +99,7 @@ As a doctor with approval permission, I want to inspect and edit an AI draft bef
 **Requirements:** FR-015, FR-016, FR-017, NFR-010, NFR-011
 
 - **Given** an existing DRAFT target and current versions
-- **When** I review, edit, request assurance, and approve
+- **When** I review and edit the real model-generated draft, request assurance, and approve
 - **Then** approval requires fresh assurance and exact version matching; stale or failed handoff leaves the record unchanged.
 
 ## US-011 — Use an operational admin view safely
