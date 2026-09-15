@@ -109,3 +109,18 @@ The 29 initial JVM failures and their fixes are detailed in [JVM-FAILURE-TRIAGE.
 ### Dependency verification metadata review
 
 The metadata contains the exact Guava parent and JUnit BOM hashes needed during recovery and no trusted/ignored bypass entries. The working-tree diff is larger than those two entries because Gradle rewrote resolved metadata: 1,232 added lines, 581 removed lines, 131 added component entries, and 59 removed component entries. No dependency version or repository change was found. This is retained as a separate owner-review item before any commit; it is not treated as automatically approved evidence.
+
+## Phase 1C post-commit verification
+
+Run date: 2026-09-16  
+Branch: `chore/android-baseline-stabilization`  
+Evidence commit: `4d6af89` (`chore: establish Android baseline evidence`). The commit contains only baseline evidence, CI, project-management templates, and local-artifact ignore rules; preserved application changes and dependency metadata remain outside the commit.
+
+| Status | Exact command | Result |
+|---|---|---|
+| PASS | `$env:GRADLE_USER_HOME='C:\Users\LAPTOP\Viora-Mobile-App\.gradle-local'; $env:ANDROID_USER_HOME='C:\Users\LAPTOP\Viora-Mobile-App\.android-recovery-4'; Remove-Item Env:ANDROID_SDK_HOME -ErrorAction SilentlyContinue; .\gradlew.bat :app:testDevDebugUnitTest --no-daemon` | 139/139 tests passed, 0 failures, 0 skipped, 0 errors. |
+| PASS | Same recovered environment; `.\gradlew.bat :app:lintDevDebug --no-daemon` | 0 lint errors, 34 warnings. |
+| BLOCKED_BY_ENVIRONMENT | Same recovered environment; `.\gradlew.bat :app:assembleDevDebug --no-daemon` | Reached `validateSigningDevDebug` and failed to acquire `C:\Users\LAPTOP\Viora-Mobile-App\.android-recovery-4\debug.keystore.lock`. |
+| PASS | Temporary workspace-only debug keystore with `.\gradlew.bat :app:assembleDevDebug --no-daemon` and injected debug signing properties | APK assembly completed; temporary keystore was removed immediately after the run. |
+
+The final local baseline remains conditional rather than hosted-green: JVM, lint, and debug assembly are verified locally; ordinary Windows debug signing remains environment-limited; CI and device tests are not executed.
