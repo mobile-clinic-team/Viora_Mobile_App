@@ -2,7 +2,7 @@
 
 Audit date: 2026-09-16  
 Branch: `chore/android-baseline-stabilization`  
-Evidence commit: `4d6af89` (`chore: establish Android baseline evidence`), based on `7bbec4b`, with preserved dirty application worktree.  
+Evidence commits: `4d6af89` (`chore: establish Android baseline evidence`) and `ec12836` (`docs: record Phase 1C baseline verification`), based on `7bbec4b`, with preserved dirty application worktree.  
 Scope: Android baseline evidence only. No backend, database, production authentication, OIDC, or real AI work was started.
 
 ## Gate status
@@ -18,7 +18,7 @@ Scope: Android baseline evidence only. No backend, database, production authenti
 | Instrumented Android tests | NOT_EXECUTED | No device or emulator was attached |
 | Dependency verification | OWNER REVIEW REQUIRED | Large Gradle-generated diff; no policy bypass found |
 | Git branch | PASS | `chore/android-baseline-stabilization` created without changing dirty files |
-| Baseline commits | PASS | Evidence/CI/documentation commit `4d6af89`; application feature work remains unstaged |
+| Baseline commits | PASS | Evidence/CI/documentation commits `4d6af89`, `ec12836`; application feature work remains unstaged |
 
 ## Commit groups
 
