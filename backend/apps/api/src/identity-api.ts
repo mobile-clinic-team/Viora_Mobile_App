@@ -1,0 +1,140 @@
+import type {
+  IdentityContextStore,
+  IdentitySubjectReference,
+  Membership,
+} from '../../../libs/identity/application-entrypoint/src/index.ts';
+import {
+  IdentityContextError,
+  listActiveMemberships,
+  resolveIdentityContext,
+} from '../../../libs/identity/application-entrypoint/src/index.ts';
+import {
+  authenticateBearerIdentity,
+  authenticateBearerRequestContext,
+} from './auth-composition.ts';
+import type { HttpAuthDependencies } from './auth-composition.ts';
+
+export interface IdentityApiResponse {
+  readonly status: 200 | 401 | 403 | 409 | 500;
+  readonly body: unknown;
+}
+
+export interface BearerIdentityApiRequest {
+  readonly authorizationHeader:
+    | string
+    | readonly string[]
+    | undefined;
+  readonly requestId: string;
+  readonly correlationId: string;
+  readonly requestedTenantId?: string;
+  readonly now?: Date;
+}
+
+function errorResponse(error: unknown): IdentityApiResponse {
+  if (!(error instanceof IdentityContextError)) {
+    return { status: 500, body: { code: 'INTERNAL_ERROR' } };
+  }
+
+  const status = error.code === 'TENANT_CONTEXT_REQUIRED' ? 409 : 401;
+  return { status, body: { code: error.code } };
+}
+
+function publicMembership(membership: Membership): Membership {
+  return membership;
+}
+
+export async function handleGetMe(
+  store: IdentityContextStore,
+  subject: IdentitySubjectReference | null,
+  requestedTenantId?: string,
+): Promise<IdentityApiResponse> {
+  try {
+    const context = await resolveIdentityContext(store, {
+      subject,
+      requestedTenantId,
+    });
+    if (context.kind !== 'authenticated') {
+      return { status: 401, body: { code: 'UNAUTHENTICATED' } };
+    }
+    return {
+      status: 200,
+      body: {
+        actor: context.actor,
+        membership: publicMembership(context.membership),
+        tenant: context.tenant,
+      },
+    };
+  } catch (error) {
+    return errorResponse(error);
+  }
+}
+
+export async function handleListMyMemberships(
+  store: IdentityContextStore,
+  subject: IdentitySubjectReference | null,
+): Promise<IdentityApiResponse> {
+  try {
+    return {
+      status: 200,
+      body: (await listActiveMemberships(store, subject)).map(publicMembership),
+    };
+  } catch (error) {
+    return errorResponse(error);
+  }
+}
+
+export async function handleAuthenticatedGetMe(
+  dependencies: HttpAuthDependencies,
+  request: BearerIdentityApiRequest,
+): Promise<IdentityApiResponse> {
+  const authenticated = await authenticateBearerRequestContext(
+    dependencies,
+    {
+      authorizationHeader: request.authorizationHeader,
+      requestId: request.requestId,
+      correlationId: request.correlationId,
+      ...(request.requestedTenantId === undefined
+        ? {}
+        : { requestedTenantId: request.requestedTenantId }),
+      ...(request.now === undefined ? {} : { now: request.now }),
+    },
+  );
+
+  if (authenticated.kind === 'ERROR') {
+    return {
+      status: authenticated.status,
+      body: authenticated.body,
+    };
+  }
+
+  return handleGetMe(
+    dependencies.identities,
+    authenticated.identity.subject,
+    request.requestedTenantId,
+  );
+}
+
+export async function handleAuthenticatedListMyMemberships(
+  dependencies: HttpAuthDependencies,
+  request: BearerIdentityApiRequest,
+): Promise<IdentityApiResponse> {
+  const authenticated = await authenticateBearerIdentity(
+    dependencies,
+    {
+      authorizationHeader: request.authorizationHeader,
+      ...(request.now === undefined ? {} : { now: request.now }),
+    },
+  );
+
+  if (authenticated.kind === 'ERROR') {
+    return {
+      status: authenticated.status,
+      body: authenticated.body,
+    };
+  }
+
+  return handleListMyMemberships(
+    dependencies.identities,
+    authenticated.identity.subject,
+  );
+}

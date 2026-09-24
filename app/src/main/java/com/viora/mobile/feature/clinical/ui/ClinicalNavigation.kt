@@ -32,9 +32,9 @@ class ClinicalNavigationContribution(private val screens: ClinicalScreens) : Nav
     override val id = "clinical-read"
     override val routeKeys = setOf("clinical-entry", "clinical-encounter", "clinical-record")
     override fun register(builder: NavGraphBuilder, dependencies: NavigationDependencies) = with(builder) {
-        composable<ClinicalEntryRoute> { entry -> val route = entry.toRoute<ClinicalEntryRoute>()
+        authorizedComposable<ClinicalEntryRoute>(dependencies) { entry -> val route = entry.toRoute<ClinicalEntryRoute>()
             screens.Entry(route, dependencies.session) }
-        composable<ClinicalEncounterRoute> { entry -> screens.Encounter(entry.toRoute<ClinicalEncounterRoute>().id, dependencies.session) }
-        composable<ClinicalRecordRoute> { entry -> screens.Record(entry.toRoute<ClinicalRecordRoute>().id, dependencies.session) }
+        authorizedComposable<ClinicalEncounterRoute>(dependencies) { entry -> screens.Encounter(entry.toRoute<ClinicalEncounterRoute>().id, dependencies.session) }
+        authorizedComposable<ClinicalRecordRoute>(dependencies) { entry -> screens.Record(entry.toRoute<ClinicalRecordRoute>().id, dependencies.session) }
     }
 }

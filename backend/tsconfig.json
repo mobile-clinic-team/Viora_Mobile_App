@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "ES2023",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "verbatimModuleSyntax": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true,
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
+    "types": ["node"]
+  },
+  "include": ["apps/**/*.ts", "libs/**/*.ts", "database/**/*.ts"],
+  "exclude": ["node_modules", "dist", ".tmp", ".nx"]
+}

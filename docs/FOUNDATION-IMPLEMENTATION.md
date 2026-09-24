@@ -1,5 +1,7 @@
 # Android foundation implementation
 
+> **Historical execution record (2026-09-09).** This report retains the toolchain and results recorded at that checkpoint. The current checked-in configuration is Gradle 9.6.0 with AGP 9.4.0; see [the Phase 1A toolchain baseline](grading/TOOLCHAIN-BASELINE.md). These results are historical evidence only.
+
 2026-09-09. Implementation evidence for the synthetic foundation; existing specifications continue to own product and API requirements.
 
 ## Delivered scope

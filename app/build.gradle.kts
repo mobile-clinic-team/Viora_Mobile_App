@@ -11,6 +11,9 @@ android {
     namespace = "com.viora.mobile"
     compileSdk = 36
     defaultConfig {
+        val backendOrigin = providers.gradleProperty("vioraBackendBaseUrl").orElse(providers.environmentVariable("VIORA_BACKEND_BASE_URL")).orElse("").get()
+        require(backendOrigin.isEmpty() || (backendOrigin.startsWith("https://") && backendOrigin.none { it == '"' || it == '\\' || it.isWhitespace() }))
+        buildConfigField("String", "BACKEND_BASE_URL", "\"$backendOrigin\"")
         applicationId = "com.viora.mobile"
         minSdk = 26
         targetSdk = 36
@@ -40,13 +43,6 @@ androidComponents {
         val flavor = variant.productFlavors.single().second
         variant.enable = (flavor == "dev" || flavor == "staging") && variant.buildType == "debug" || flavor == "prod" && variant.buildType == "release"
     }
-}
-// Live builds are deliberately unavailable until BD-06 and real gateways are implemented.
-val verifyLiveEnvironment by tasks.registering {
-    doLast { error("Live environment unavailable: resolve BD-06 and implement verified OIDC wiring. Use devDebug.") }
-}
-tasks.configureEach {
-    if (name == "preProdReleaseBuild" || name == "preStagingDebugBuild") dependsOn(verifyLiveEnvironment)
 }
 dependencyLocking { lockAllConfigurations() }
 dependencies {

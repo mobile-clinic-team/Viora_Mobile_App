@@ -14,6 +14,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.viora.mobile.core.model.ApiResult
 import com.viora.mobile.core.session.SessionPort
+import com.viora.mobile.core.ui.*
 import com.viora.mobile.feature.clinical.domain.*
 import com.viora.mobile.feature.patients.domain.PageRequest
 import com.viora.mobile.feature.patients.domain.Patient
@@ -113,23 +114,18 @@ class ClinicalScreens(private val reader: ClinicalReader, private val navigate: 
 @Composable fun <T> ClinicalReadPane(state: ClinicalState<T>, retry: () -> Unit, emptyText: String,
     content: @Composable (T) -> Unit) {
     when (state) {
-        ClinicalState.Initial -> Text("Clinical context is unavailable.")
-        ClinicalState.Loading -> Column(Modifier.semantics { liveRegion = LiveRegionMode.Polite }) {
-            CircularProgressIndicator(Modifier.semantics { contentDescription = "Loading clinical information" })
-            Text("Loading clinical information…")
-        }
+        ClinicalState.Initial -> UiStatePanel(UiStateKind.UNAVAILABLE, "Clinical context unavailable", "Clinical context is unavailable.")
+        ClinicalState.Loading -> UiStatePanel(UiStateKind.LOADING, "Loading", "Loading clinical information…")
         is ClinicalState.Loaded -> content(state.value)
-        is ClinicalState.Empty -> { content(state.value); Text(emptyText, Modifier.semantics { liveRegion = LiveRegionMode.Polite }) }
-        ClinicalState.PermissionDenied -> Text("You do not have permission to view this clinical information.")
-        ClinicalState.NotFound -> Text("Clinical information was not found or is no longer accessible.")
-        ClinicalState.Stale -> {
-            Text("Clinical context changed. Refresh before continuing.")
-            Button(onClick = retry) { Text("Refresh context") }
-        }
-        is ClinicalState.Error -> Text("Clinical information could not be verified. Return and reopen this context.")
-        is ClinicalState.RetriableFailure -> {
-            Text("Clinical information could not be loaded.")
-            Button(onClick = retry) { Text("Retry") }
-        }
+        is ClinicalState.Empty -> { content(state.value); UiStatePanel(UiStateKind.EMPTY, "Nothing to show", emptyText) }
+        ClinicalState.PermissionDenied -> UiStatePanel(UiStateKind.DENIED, "Access unavailable", "You do not have permission to view this clinical information.")
+        ClinicalState.NotFound -> UiStatePanel(UiStateKind.UNAVAILABLE, "Clinical information unavailable", "Clinical information was not found or is no longer accessible.")
+        ClinicalState.Stale -> UiStatePanel(UiStateKind.ERROR, "Clinical context changed", "Clinical context changed. Refresh before continuing.",
+            action = { Button(onClick = retry) { Text("Refresh context") } })
+        is ClinicalState.Error -> UiStatePanel(UiStateKind.ERROR, "Clinical record unavailable",
+            "Clinical information could not be verified. Return and reopen this context.",
+            action = if (state.code == "INVALID_RESPONSE") null else ({ Button(onClick = retry) { Text("Retry") } }))
+        is ClinicalState.RetriableFailure -> UiStatePanel(UiStateKind.ERROR, "Clinical information could not be loaded.", "Try again to load the current record.",
+            action = { Button(onClick = retry) { Text("Retry") } })
     }
 }

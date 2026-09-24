@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "noEmitOnError": true,
+    "rewriteRelativeImportExtensions": true,
+    "rootDir": ".",
+    "outDir": "dist/validation"
+  },
+  "include": ["apps/**/*.ts", "libs/**/*.ts"],
+  "exclude": ["**/*.test.ts", "node_modules", "dist", ".tmp", ".nx"]
+}

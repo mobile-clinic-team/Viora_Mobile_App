@@ -9,7 +9,7 @@ These are pinned starting versions, not a claim to use the newest release. The s
 | Concern | Decision and reason |
 |---|---|
 | Android | minSdk 26 (Android 8); compileSdk 36; targetSdk 36. API 26 enables native java.time and a bounded modern device baseline. No preview SDKs |
-| Compiler/build | Kotlin 2.3.10; Android Gradle Plugin 8.13.2; Gradle wrapper 8.13; JDK/JVM target 17. Kotlin Android, Compose compiler and serialization compiler plugins use the same Kotlin version |
+| Compiler/build | Kotlin 2.3.10; Android Gradle Plugin 9.4.0; Gradle wrapper 9.6.0; JDK/JVM target 17. The audit machine observed JBR/JDK 21.0.11. Kotlin Android, Compose compiler and serialization compiler plugins use the same Kotlin version |
 | UI | Compose BOM 2025.12.00; Material 3; Activity Compose 1.11.0; Lifecycle runtime/viewmodel Compose and process 2.9.4 |
 | Navigation | Navigation Compose and navigation-testing 2.9.5; typed serialized destination classes. One NavHost, no fragments or Safe Args |
 | HTTP | OkHttp 4.12.0 with coroutine cancellation bridge; matching MockWebServer 4.12.0 in JVM tests. No Retrofit layer is needed for this bounded API |

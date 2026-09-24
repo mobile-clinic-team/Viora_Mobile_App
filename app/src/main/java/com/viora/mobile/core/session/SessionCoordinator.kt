@@ -16,6 +16,7 @@ class SessionCoordinator(
     private val store: SecureStore,
     private val clock: AppClock,
     private val scope: CoroutineScope,
+    private val diagnostics: AuthDiagnostics = AuthDiagnostics(),
 ) : SessionPort {
     private val mutex = Mutex()
     private val mutableState = MutableStateFlow(SessionState())
@@ -39,7 +40,19 @@ class SessionCoordinator(
             require(bundle.refreshExpiresAt == java.time.Instant.parse(credential.refreshExpiresAt))
             if (install(epoch, bundle)) loadIdentity(epoch, bundle)
         } catch (cancelled: CancellationException) { throw cancelled }
-        catch (_: Exception) { fail(epoch, "Please sign in again.") }
+        catch (_: Exception) { diagnostics.report(AuthStage.RESTORE, AuthReason.VALIDATION_FAILURE); fail(epoch, "Please sign in again.") }
+    }
+
+    override suspend fun register(email: String, password: String, displayName: String) {
+        val epoch = mutex.withLock {
+            check(mutableState.value.phase == SessionPhase.SIGNED_OUT)
+            mutableState.value.authEpoch
+        }
+        (auth as? PasswordAuthGateway)?.register(email, password, displayName) ?: error("Registration unavailable")
+        mutex.withLock {
+            if (mutableState.value.authEpoch == epoch && mutableState.value.phase == SessionPhase.SIGNED_OUT)
+                mutableState.value = mutableState.value.copy(message = null)
+        }
     }
 
     override suspend fun signIn() {
@@ -49,6 +62,16 @@ class SessionCoordinator(
             if (install(epoch, bundle)) loadIdentity(epoch, bundle)
         } catch (cancelled: CancellationException) { throw cancelled }
         catch (_: Exception) { fail(epoch, "Sign-in unavailable. Try again.") }
+    }
+
+    override suspend fun signIn(email: String, password: String) {
+        val epoch = beginAuthenticationEpoch() ?: return
+        try {
+            val bundle = if (auth is PasswordAuthGateway) auth.login(email, password)
+                else (auth as? LocalCredentialGateway)?.authenticate(email, password) ?: error("Authentication unavailable")
+            if (install(epoch, bundle)) loadIdentity(epoch, bundle)
+        } catch (cancelled: CancellationException) { throw cancelled }
+        catch (_: Exception) { fail(epoch, "Sign-in or account access could not be verified. Check your details and retry.") }
     }
 
     override suspend fun acceptTokenBundle(bundle: TokenBundle) {
@@ -71,7 +94,7 @@ class SessionCoordinator(
     }
 
     private suspend fun install(epoch: Long, bundle: TokenBundle): Boolean {
-        bundle.validate()
+        diagnostics.validate(AuthStage.TOKEN_CONTRACT) { bundle.validate() }
         val accepted = try { mutex.withLock {
             if (mutableState.value.authEpoch != epoch) false
             else {
@@ -87,6 +110,7 @@ class SessionCoordinator(
                 true
             }
         } } catch (failure: Exception) {
+            diagnostics.report(AuthStage.SESSION_INSTALL, if (failure is com.viora.mobile.core.security.SecureStoreException) AuthReason.STORAGE_FAILURE else AuthReason.VALIDATION_FAILURE)
             revokeLater(bundle.credential())
             throw failure
         }
@@ -95,20 +119,59 @@ class SessionCoordinator(
     }
 
     private suspend fun loadIdentity(epoch: Long, bundle: TokenBundle) {
+        if (auth is PasswordAuthGateway) {
+            val identity = auth.identity(bundle.accessToken)
+            diagnostics.validate(AuthStage.SESSION_IDENTITY) {
+            identity.user.validate()
+            require(identity.user.id == bundle.userId && identity.sessionId == bundle.sessionId)
+            identity.memberships.forEach { it.validate(bundle.userId) }
+            }
+            mutex.withLock {
+                if (mutableState.value.authEpoch == epoch) mutableState.value = mutableState.value.copy(
+                    contextEpoch = mutableState.value.contextEpoch + 1,
+                    phase = if (identity.requiresWorkspaceSelection) SessionPhase.SELECT_WORKSPACE else SessionPhase.READY,
+                    user = identity.user, memberships = identity.memberships, workspace = identity.workspace,
+                    selectedRole = identity.persona, serverAuthority = true, message = null)
+            }
+            return
+        }
         val user = auth.user(bundle.accessToken)
         user.validate()
         require(user.id == bundle.userId)
         val memberships = workspaces.memberships(bundle.accessToken)
         memberships.forEach { it.validate(user.id) }
-        require(memberships.map { it.workspaceId }.distinct().size == memberships.size)
+        require(memberships.map { it.id }.distinct().size == memberships.size)
+        require(memberships.map { it.workspaceId to it.role }.distinct().size == memberships.size)
         val accepted = mutex.withLock {
             if (mutableState.value.authEpoch != epoch) false else {
-                mutableState.value = mutableState.value.copy(phase = SessionPhase.SELECT_WORKSPACE, user = user, memberships = memberships)
+                mutableState.value = mutableState.value.copy(phase = SessionPhase.SELECT_ROLE, user = user, memberships = memberships,
+                    workspace = null, selectedRole = null)
                 true
             }
         }
-        val active = memberships.filter { it.active }
-        if (accepted && active.size == 1) selectWorkspace(active.single().workspaceId)
+        if (!accepted) return
+        val roles = state.value.roles
+        val role = roles.singleOrNull()
+        if (role != null) resolveRole(role, null)
+        else if (roles.isEmpty()) mutex.withLock {
+            if (mutableState.value.authEpoch == epoch) mutableState.value = mutableState.value.copy(
+                phase = SessionPhase.SELECT_WORKSPACE, workspace = null, selectedRole = null,
+                message = "No authorized workspace is available.")
+        }
+    }
+
+    override suspend fun selectRole(role: AppRole) = resolveRole(role, null)
+
+    private suspend fun resolveRole(role: AppRole, savedWorkspace: String?) {
+        val next = mutex.withLock {
+            val current = mutableState.value
+            if (current.phase != SessionPhase.SELECT_ROLE || role !in current.roles) return
+            current.copy(phase = SessionPhase.SELECT_WORKSPACE, selectedRole = role,
+                workspace = null, contextEpoch = current.contextEpoch + 1).also { mutableState.value = it }
+        }
+        val choices = next.authorizedMemberships
+        val target = choices.firstOrNull { it.workspaceId == savedWorkspace } ?: choices.singleOrNull()
+        if (target != null) selectWorkspace(target.workspaceId)
     }
 
     override suspend fun snapshot(requireWorkspace: Boolean): SessionSnapshot? {
@@ -117,7 +180,7 @@ class SessionCoordinator(
             val state = mutableState.value
             val token = tokens ?: return@withLock null
             val user = state.user ?: return@withLock null
-            if (requireWorkspace && state.phase != SessionPhase.READY) return@withLock null
+            if (requireWorkspace && (state.phase != SessionPhase.READY || state.workspace == null)) return@withLock null
             SessionSnapshot(state.authEpoch, state.contextEpoch, user.id, token.accessToken, state.workspace, token.tokenType)
         }
     }
@@ -138,7 +201,10 @@ class SessionCoordinator(
                     require(replacement.sessionId == current.sessionId && replacement.userId == current.userId)
                     require(replacement.refreshExpiresAt == current.refreshExpiresAt)
                     require(replacement.refreshToken != current.refreshToken)
-                    if (install(epoch, replacement)) replacement else null
+                    if (install(epoch, replacement)) {
+                        if (auth is PasswordAuthGateway) loadIdentity(epoch, replacement)
+                        replacement
+                    } else null
                 } catch (cancelled: CancellationException) { throw cancelled }
                 catch (_: Exception) { fail(epoch, "Session could not be renewed. Please sign in."); null }
                 finally { mutex.withLock { if (mutableState.value.authEpoch == epoch) refreshFlight = null } }
@@ -152,23 +218,26 @@ class SessionCoordinator(
     override suspend fun selectWorkspace(id: String) {
         val pending = mutex.withLock {
             val current = mutableState.value
-            if (current.memberships.none { it.workspaceId == id && it.active }) return
+            if (current.phase !in setOf(SessionPhase.SELECT_WORKSPACE, SessionPhase.READY, SessionPhase.VALIDATING_WORKSPACE) ||
+                current.authorizedMemberships.none { it.workspaceId == id }) return
             mutableState.value = current.copy(phase = SessionPhase.VALIDATING_WORKSPACE,
+                selectedRole = AppRole.parse(current.authorizedMemberships.single { it.workspaceId == id }.role),
                 workspace = null, contextEpoch = current.contextEpoch + 1, message = null)
             mutableState.value
         }
         try {
             val snapshot = snapshot(false) ?: return
             if (snapshot.contextEpoch != pending.contextEpoch) return
-            val membership = pending.memberships.single { it.workspaceId == id }
-            val context = workspaces.validate(snapshot.accessToken, id).also {
+            val membership = pending.authorizedMemberships.single { it.workspaceId == id }
+            val context = workspaces.validate(snapshot.accessToken, id, requireNotNull(pending.selectedRole)).also {
                 it.validate()
                 require(it.id == id)
-                require(it.membershipId == null || it.membershipId == membership.id)
-                require(it.role == null || it.role == membership.role)
+                require(it.membershipId == membership.id)
+                require(it.role == membership.role && AppRole.parse(it.role) == pending.selectedRole)
             }
             mutex.withLock {
                 if (mutableState.value.authEpoch == pending.authEpoch && mutableState.value.contextEpoch == pending.contextEpoch) {
+                    store.writeCredential(requireNotNull(tokens).credential())
                     mutableState.value = mutableState.value.copy(phase = SessionPhase.READY, workspace = context, message = null)
                 }
             }
@@ -183,18 +252,37 @@ class SessionCoordinator(
     }
 
     override suspend fun chooseWorkspace() = mutex.withLock {
-        if (tokens != null) mutableState.value = mutableState.value.copy(
+        if (mutableState.value.serverAuthority && mutableState.value.selectedRole == AppRole.PATIENT) return@withLock
+        if (tokens != null && mutableState.value.selectedRole != null) mutableState.value = mutableState.value.copy(
+            selectedRole = if (mutableState.value.serverAuthority) null else mutableState.value.selectedRole,
             phase = SessionPhase.SELECT_WORKSPACE, workspace = null, contextEpoch = mutableState.value.contextEpoch + 1, message = null)
     }
 
     override suspend fun invalidateContext() {
+        if (auth is PasswordAuthGateway) {
+            val current = mutex.withLock {
+                val bundle = tokens ?: return
+                mutableState.value = mutableState.value.copy(phase = SessionPhase.RESTORING, workspace = null,
+                    selectedRole = null, serverAuthority = false, contextEpoch = mutableState.value.contextEpoch + 1)
+                mutableState.value.authEpoch to bundle
+            }
+            try { loadIdentity(current.first, current.second) }
+            catch (cancelled: CancellationException) { throw cancelled }
+            catch (_: Exception) { fail(current.first, "Account access could not be verified. Sign in to retry.") }
+            return
+        }
         chooseWorkspace()
         val snapshot = snapshot(false) ?: return
         try {
             val memberships = workspaces.memberships(snapshot.accessToken)
-            require(memberships.all { it.userId == snapshot.userId && Ids.valid(it.workspaceId) })
+            memberships.forEach { it.validate(snapshot.userId) }
+            require(memberships.map { it.workspaceId to it.role }.distinct().size == memberships.size)
             mutex.withLock {
-                if (matchesLocked(snapshot)) mutableState.value = mutableState.value.copy(memberships = memberships)
+                if (matchesLocked(snapshot)) {
+                    val next = mutableState.value.copy(memberships = memberships)
+                    mutableState.value = if (next.selectedRole in next.roles) next else next.copy(
+                        phase = SessionPhase.SELECT_ROLE, selectedRole = null, workspace = null)
+                }
             }
         } catch (cancelled: CancellationException) { throw cancelled }
         catch (_: Exception) {

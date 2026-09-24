@@ -1,0 +1,6 @@
+{
+  "name": "identity-data-access",
+  "projectType": "library",
+  "sourceRoot": "libs/identity/data-access",
+  "tags": ["boundary:identity-data-access", "scope:identity", "type:data-access"]
+}

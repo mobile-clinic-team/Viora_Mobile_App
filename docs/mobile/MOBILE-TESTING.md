@@ -1,5 +1,7 @@
 # Mobile testing and validation
 
+> **Historical proposal snapshot (2026-09-08).** The statement that no mobile source/tests existed was true for that audit checkpoint. Current test inventory and execution status are recorded in the root grading documents; this remains the proposed test plan.
+
 Status: **PROPOSED future tests; documentation checks are reported separately below.** No mobile source/tests exist and no production workflow was exercised. API gap IDs are in [API integration](MOBILE-API-INTEGRATION.md); security IDs in [security](MOBILE-SECURITY.md).
 
 ## Mobile test boundaries

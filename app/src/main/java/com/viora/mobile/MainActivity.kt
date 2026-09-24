@@ -1,4 +1,4 @@
-package com.viora.mobile
+﻿package com.viora.mobile
 
 import android.os.Bundle
 import android.view.View
@@ -6,13 +6,7 @@ import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModelProvider
 import com.viora.mobile.app.AppShell
 import com.viora.mobile.app.AppViewModel
@@ -32,7 +26,7 @@ class MainActivity : ComponentActivity() {
         if (android.os.Build.VERSION.SDK_INT >= 30) window.decorView.importantForContentCapture = View.IMPORTANT_FOR_CONTENT_CAPTURE_NO_EXCLUDE_DESCENDANTS
         val model = ViewModelProvider(this, AppViewModel.Factory(graph))[AppViewModel::class.java]
         setContent { VioraTheme {
-            if (covered) Surface(Modifier.fillMaxSize()) { Box(contentAlignment = Alignment.Center) { Text("Viora · Session protected") } }
+            if (covered) com.viora.mobile.core.ui.VioraSplash()
             else AppShell(model)
         } }
     }
@@ -52,3 +46,4 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+

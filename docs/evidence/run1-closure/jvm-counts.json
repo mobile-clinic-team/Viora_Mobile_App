@@ -1,0 +1,18 @@
+[
+  {
+    "variant": "testDevDebugUnitTest",
+    "tests": 144,
+    "passed": 144,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  {
+    "variant": "testStagingDebugUnitTest",
+    "tests": 39,
+    "passed": 39,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  }
+]

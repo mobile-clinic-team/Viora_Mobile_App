@@ -15,9 +15,9 @@ class AssistantNavigationContribution(private val screens: AssistantScreens): Na
     override val id="assistant"
     override val routeKeys=setOf("assistant","assistant-conversation","assistant-draft","assistant-create")
     override fun register(builder: NavGraphBuilder,dependencies: NavigationDependencies) = with(builder) {
-        composable<Assistant> { screens.Home(dependencies) }
-        composable<AssistantConversationRoute> { screens.Conversation(it.toRoute<AssistantConversationRoute>().id,dependencies) }
-        composable<AssistantDraftRoute> { screens.Draft(it.toRoute<AssistantDraftRoute>().id,dependencies) }
-        composable<AssistantCreateRoute> { screens.Create(it.toRoute<AssistantCreateRoute>(),dependencies) }
+        authorizedComposable<Assistant>(dependencies) { screens.Home(dependencies) }
+        authorizedComposable<AssistantConversationRoute>(dependencies) { screens.Conversation(it.toRoute<AssistantConversationRoute>().id,dependencies) }
+        authorizedComposable<AssistantDraftRoute>(dependencies) { screens.Draft(it.toRoute<AssistantDraftRoute>().id,dependencies) }
+        authorizedComposable<AssistantCreateRoute>(dependencies) { screens.Create(it.toRoute<AssistantCreateRoute>(),dependencies) }
     }
 }

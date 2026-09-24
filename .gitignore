@@ -9,7 +9,21 @@ local.properties
 *.keystore
 captures/
 
+backend/node_modules/
+backend/dist/
+backend/coverage/
+backend/.nx/
+backend/.env
+backend/.env.*
+!backend/.env.example
+
 # Local Gradle/cache work directories
 .gradle-clean/
 .gradle-user-home/
 gradle-tmp/
+
+# Repository-local recovery homes; never commit machine-specific caches or keys.
+.gradle-local/
+.android-local/
+.android-recovery-*/
+hs_err_pid*.log

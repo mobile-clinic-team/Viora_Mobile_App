@@ -6,9 +6,9 @@ import com.viora.mobile.core.session.SessionPort
 import com.viora.mobile.core.session.UnavailableGateway
 
 @Suppress("UNUSED_PARAMETER")
-class EnvironmentBindings(clock: AppClock) : OperationalEnvironmentBindings {
+class EnvironmentBindings(clock: AppClock, api: com.viora.mobile.core.network.ApiClient) : OperationalEnvironmentBindings {
     override val synthetic = false
-    val auth = UnavailableGateway()
+    val auth = com.viora.mobile.core.session.HttpPasswordGateway(api)
     val workspaces = auth
     override fun operational(session: SessionPort, requests: AuthenticatedRequestPort, clock: AppClock) =
         OperationalDependencies(UnavailableOperationalRepositories, UnavailableOperationalRepositories,

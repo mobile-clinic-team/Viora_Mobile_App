@@ -1,0 +1,122 @@
+▶ Phase 6 Run 3 PostgreSQL human review, assurance, exact-version approval and Clinical handoff
+  ✔ human review atomically records reviewer, exact requested version and mandatory audit (146.8739ms)
+  ✔ two concurrent human review commands have one valid winner (198.2621ms)
+  ✔ missing/expired authentication, AI actor, missing capabilities and governance deny (45.2487ms)
+  ✔ revoked session and workspace revision deny before mutation (37.2805ms)
+  ✔ cross-tenant and absent IDs are non-disclosing; wrong patient/encounter relationships deny (70.0307ms)
+  ✔ rejection is exact-version human terminal action with no handoff (77.3764ms)
+  ✔ unreviewed draft cannot obtain approval assurance or handoff (36.5255ms)
+  ✔ MFA must be configured, fresh and bound to this actor/session/draft/version/target (67.3681ms)
+  ✔ edit invalidates old reviewed token and old assurance; fresh exact version can hand off (151.7307ms)
+  ✔ approval requires independent record.edit permission and Clinical write policy (73.4131ms)
+  ✔ approve vs reject race produces one terminal result and at most one handoff (76.7609ms)
+  ✔ duplicate approval operations and different-key races create one handoff/version (95.0499ms)
+  ✔ ai_handoffs rejection rolls back approval, Clinical version, assurance consumption and operation completion (88.7368ms)
+  ✖ audit_events rejection rolls back approval, Clinical version, assurance consumption and operation completion (50.8062ms)
+  ✖ stale target, wrong target body and provenance corruption block handoff (60.3504ms)
+  ✔ review and rejection audit failures roll back their version transitions (88.7818ms)
+  ✔ bigint review and approval bind exact tokens beyond Number precision (53.0486ms)
+  ✔ two drafts targeting the same record cannot both hand off the old target version (100.1397ms)
+  ✔ expired draft and expired/session-mismatched assurance cannot approve (71.8203ms)
+  ✔ audit and operation metadata never contain Clinical payloads or assurance secrets (2.3231ms)
+✖ Phase 6 Run 3 PostgreSQL human review, assurance, exact-version approval and Clinical handoff (1953.7361ms)
+✔ runs the complete migration chain on PostgreSQL (963.089ms)
+✖ PostgreSQL migration upgrade, replay, checksum rejection and rollback preserve committed state (1139.1981ms)
+✔ PostgreSQL session stays pinned and close rolls back an unfinished transaction (114.0153ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 20
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5352.4433
+
+✖ failing tests:
+
+test at apps\api\src\postgres-ai-review.integration.test.ts:166:64
+✖ audit_events rejection rolls back approval, Clinical version, assurance consumption and operation completion (50.8062ms)
+  error: new row for relation "draft_assurance_grants" violates check constraint "draft_assurance_expiry"
+      at C:\Users\LAPTOP\Viora-Mobile-App\backend\node_modules\pg\lib\client.js:694:17
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Object.query (file:///C:/Users/LAPTOP/Viora-Mobile-App/backend/libs/platform/database/src/runtime.ts:74:26)
+      at async PostgresDraftAssuranceRepository.issue (file:///C:/Users/LAPTOP/Viora-Mobile-App/backend/libs/identity/data-access/src/draft-assurance-repository.ts:19:18)
+      at async file:///C:/Users/LAPTOP/Viora-Mobile-App/backend/apps/api/src/ai-draft-review.ts:149:23
+      at async Object.transaction (file:///C:/Users/LAPTOP/Viora-Mobile-App/backend/libs/platform/database/src/runtime.ts:88:24)
+      at async grant (file:///C:/Users/LAPTOP/Viora-Mobile-App/backend/apps/api/src/postgres-ai-review.integration.test.ts:54:55)
+      at async TestContext.<anonymous> (file:///C:/Users/LAPTOP/Viora-Mobile-App/backend/apps/api/src/postgres-ai-review.integration.test.ts:167:62)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async TestContext.<anonymous> (file:///C:/Users/LAPTOP/Viora-Mobile-App/backend/apps/api/src/postgres-ai-review.integration.test.ts:166:56) {
+    length: 627,
+    severity: 'ERROR',
+    code: '23514',
+    detail: 'Failing row contains (986e6983-accc-4273-97c3-7c83e60f996d, \\x54581dc393ccf269a21cd2c5ac26b475c03c125774696340d2dd692a7f3610..., ad516126-9b15-4b3f-8f3c-5e1d68db4255, b9765f4f-1b0b-4dfd-9ab7-45a3964ccfc8, 9f950a4e-c82f-4e09-b6f1-c9ce35824fd4, c4cb9ed1-c2fe-41d1-82ff-811abeb6dda4, 2, 1b45477e-bab4-45c0-9348-2c82cc2718cc, "3", draft.approve, 2026-09-22 08:31:24.677761+07, 2026-09-22 08:33:24.677762+07, null).',
+    hint: undefined,
+    position: undefined,
+    internalPosition: undefined,
+    internalQuery: undefined,
+    where: undefined,
+    schema: 'public',
+    table: 'draft_assurance_grants',
+    column: undefined,
+    dataType: undefined,
+    constraint: 'draft_assurance_expiry',
+    file: 'execMain.c',
+    line: '2081',
+    routine: 'ExecConstraints'
+  }
+
+test at apps\api\src\postgres-ai-review.integration.test.ts:180:13
+✖ stale target, wrong target body and provenance corruption block handoff (60.3504ms)
+  error: new row for relation "draft_assurance_grants" violates check constraint "draft_assurance_expiry"
+      at C:\Users\LAPTOP\Viora-Mobile-App\backend\node_modules\pg\lib\client.js:694:17
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Object.query (file:///C:/Users/LAPTOP/Viora-Mobile-App/backend/libs/platform/database/src/runtime.ts:74:26)
+      at async PostgresDraftAssuranceRepository.issue (file:///C:/Users/LAPTOP/Viora-Mobile-App/backend/libs/identity/data-access/src/draft-assurance-repository.ts:19:18)
+      at async file:///C:/Users/LAPTOP/Viora-Mobile-App/backend/apps/api/src/ai-draft-review.ts:149:23
+      at async Object.transaction (file:///C:/Users/LAPTOP/Viora-Mobile-App/backend/libs/platform/database/src/runtime.ts:88:24)
+      at async grant (file:///C:/Users/LAPTOP/Viora-Mobile-App/backend/apps/api/src/postgres-ai-review.integration.test.ts:54:55)
+      at async TestContext.<anonymous> (file:///C:/Users/LAPTOP/Viora-Mobile-App/backend/apps/api/src/postgres-ai-review.integration.test.ts:181:62)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async TestContext.<anonymous> (file:///C:/Users/LAPTOP/Viora-Mobile-App/backend/apps/api/src/postgres-ai-review.integration.test.ts:180:5) {
+    length: 627,
+    severity: 'ERROR',
+    code: '23514',
+    detail: 'Failing row contains (aff54f5a-4ac0-4425-8906-f64200c5ff80, \\xaa4862d7196279f3530fe06b3f1d44a1036d89a43a006bab258caa39370b66..., ad516126-9b15-4b3f-8f3c-5e1d68db4255, b9765f4f-1b0b-4dfd-9ab7-45a3964ccfc8, 9f950a4e-c82f-4e09-b6f1-c9ce35824fd4, 87355bac-8f2c-4300-aa8b-bf8f0d2a61b8, 2, 1b45477e-bab4-45c0-9348-2c82cc2718cc, "3", draft.approve, 2026-09-22 08:31:24.738281+07, 2026-09-22 08:33:24.738282+07, null).',
+    hint: undefined,
+    position: undefined,
+    internalPosition: undefined,
+    internalQuery: undefined,
+    where: undefined,
+    schema: 'public',
+    table: 'draft_assurance_grants',
+    column: undefined,
+    dataType: undefined,
+    constraint: 'draft_assurance_expiry',
+    file: 'execMain.c',
+    line: '2081',
+    routine: 'ExecConstraints'
+  }
+
+test at libs\platform\database\src\postgres-migration.integration.test.ts:21:1
+✖ PostgreSQL migration upgrade, replay, checksum rejection and rollback preserve committed state (1139.1981ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /division by zero/. Input:
+  
+  'Error: duplicate migration version 023'
+  
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (file:///C:/Users/LAPTOP/Viora-Mobile-App/backend/libs/platform/database/src/postgres-migration.integration.test.ts:45:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: duplicate migration version 023
+        at runMigrations (file:///C:/Users/LAPTOP/Viora-Mobile-App/backend/libs/platform/database/src/index.ts:97:48)
+        at TestContext.<anonymous> (file:///C:/Users/LAPTOP/Viora-Mobile-App/backend/libs/platform/database/src/postgres-migration.integration.test.ts:45:26)
+        at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+        at async Test.run (node:internal/test_runner/test:1389:7)
+        at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3),
+    expected: /division by zero/,
+    operator: 'rejects',
+    diff: 'simple'
+  }

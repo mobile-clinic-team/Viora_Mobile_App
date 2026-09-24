@@ -1,0 +1,4 @@
+#!/bin/bash
+command -v node >/dev/null 2>&1 || { echo >&2 "Nx requires NodeJS to be available. To install NodeJS and NPM, see: https://nodejs.org/en/download/ ."; exit 1; }
+path_to_root=$(CDPATH= cd -- "$(dirname -- "$BASH_SOURCE")" && pwd)
+node "$path_to_root/node_modules/nx/dist/bin/nx.js" "$@"

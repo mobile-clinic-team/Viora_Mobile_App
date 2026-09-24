@@ -1,5 +1,7 @@
 # Member A — Operational Integration Report
 
+> **Historical execution record (2026-09-09).** The Gradle 8.13/AGP 8.13.2 commands below describe that source checkpoint. They are not current same-revision verification; see [the Phase 1A verification baseline](grading/VERIFICATION-BASELINE.md).
+
 2026-09-09 · Local devDebug · Operational Integration Seam
 
 Final validation: complete. The same final source revision passed the Gradle JVM/lint/build checks and all 12 Android tests on each of API 26 and API 36 (24 final device test executions).

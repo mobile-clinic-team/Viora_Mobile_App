@@ -1,5 +1,7 @@
 # Member A — Gradle Reproducibility Report
 
+> **Historical execution record (completed 2026-09-12).** This report describes a prior Gradle 8.13/AGP 8.13.2 checkpoint. The current wrapper/catalog configuration is Gradle 9.6.0/AGP 9.4.0, and this report is retained as historical evidence only.
+
 Completed: 2026-09-12. Scope: restore verified devDebug dependency resolution; no feature work.
 
 ## 1. Root Cause

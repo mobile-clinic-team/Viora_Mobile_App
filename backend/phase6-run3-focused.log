@@ -1,0 +1,36 @@
+✔ human draft commands reject caller identity, provenance, status and target changes (3.776ms)
+✔ rejection is bounded and fails closed when reason retention is unavailable (0.2223ms)
+✔ approval requires only exact target identity/token and excludes model approval identity (0.1289ms)
+▶ Phase 6 Run 3 PostgreSQL human review, assurance, exact-version approval and Clinical handoff
+  ✔ human review atomically records reviewer, exact requested version and mandatory audit (75.3645ms)
+  ✔ two concurrent human review commands have one valid winner (74.9617ms)
+  ✔ missing/expired authentication, AI actor, missing capabilities and governance deny (28.355ms)
+  ✔ revoked session and workspace revision deny before mutation (20.9908ms)
+  ✔ cross-tenant and absent IDs are non-disclosing; wrong patient/encounter relationships deny (48.7757ms)
+  ✔ rejection is exact-version human terminal action with no handoff (65.8405ms)
+  ✔ unreviewed draft cannot obtain approval assurance or handoff (49.7773ms)
+  ✔ MFA must be configured, fresh and bound to this actor/session/draft/version/target (75.6701ms)
+  ✔ edit invalidates old reviewed token and old assurance; fresh exact version can hand off (143.9436ms)
+  ✔ approval requires independent record.edit permission and Clinical write policy (40.2259ms)
+  ✔ approve vs reject race produces one terminal result and at most one handoff (44.9793ms)
+  ✔ duplicate approval operations and different-key races create one handoff/version (51.6103ms)
+  ✔ ai_handoffs rejection rolls back approval, Clinical version, assurance consumption and operation completion (56.0641ms)
+  ✔ audit_events rejection rolls back approval, Clinical version, assurance consumption and operation completion (58.2105ms)
+  ✔ stale target, wrong target body and provenance corruption block handoff (64.8411ms)
+  ✔ review and rejection audit failures roll back their version transitions (54.2616ms)
+  ✔ bigint review and approval bind exact tokens beyond Number precision (60.1981ms)
+  ✔ two drafts targeting the same record cannot both hand off the old target version (107.8572ms)
+  ✔ expired draft and expired/session-mismatched assurance cannot approve (66.7885ms)
+  ✔ audit and operation metadata never contain Clinical payloads or assurance secrets (1.9363ms)
+✔ Phase 6 Run 3 PostgreSQL human review, assurance, exact-version approval and Clinical handoff (1366.7261ms)
+✔ AI draft workflow enforces GENERATED → REVIEWING → APPROVED (1.2973ms)
+✔ AI draft workflow rejects approval before human review and supports rejection (0.9016ms)
+✔ AI actor cannot perform human approval transitions (0.3086ms)
+ℹ tests 27
+ℹ suites 0
+ℹ pass 27
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2680.7992
