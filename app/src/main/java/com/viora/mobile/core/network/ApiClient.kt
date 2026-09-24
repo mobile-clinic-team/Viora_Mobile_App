@@ -4,6 +4,9 @@ import com.viora.mobile.core.model.ApiResult
 import com.viora.mobile.core.model.Ids
 import com.viora.mobile.core.model.VersionToken
 import com.viora.mobile.core.session.SessionSnapshot
+import com.viora.mobile.core.session.AuthDiagnostics
+import com.viora.mobile.core.session.AuthStage
+import com.viora.mobile.core.session.AuthReason
 import com.viora.mobile.core.time.AppClock
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -45,7 +48,7 @@ class ApiPayload(
     override fun toString(): String = "ApiPayload(REDACTED)"
 }
 @Serializable private data class ErrorEnvelope(val error: WireError)
-@Serializable private data class WireError(val code: String, val message: String, val details: ErrorDetails, val requestId: String, val correlationId: String)
+@Serializable private data class WireError(val code: String, val message: String, val details: ErrorDetails?, val requestId: String, val correlationId: String)
 @Serializable private data class ErrorDetails(val fields: List<FieldError>, val decisionIds: List<String>)
 @Serializable private data class FieldError(val path: String, val code: String)
 
@@ -56,6 +59,7 @@ class ApiClient(
     allowTestLoopback: Boolean = false,
     connectTimeoutMillis: Long = 10_000,
     callTimeoutMillis: Long = 30_000,
+    val authDiagnostics: AuthDiagnostics = AuthDiagnostics(),
 ) {
     private val base = origin.toHttpUrl().also {
         require(it.encodedPath == "/" && it.query == null && it.fragment == null && it.username.isEmpty() && it.password.isEmpty())
@@ -121,6 +125,13 @@ class ApiClient(
         }
     }
     private suspend fun call(request: ApiRequest, snapshot: SessionSnapshot?): Pair<ApiResult<ApiPayload>, String?> {
+        val authStage = when (request.path) {
+            "/v1/auth/register" -> AuthStage.REGISTER_HTTP
+            "/v1/auth/login" -> AuthStage.LOGIN_HTTP
+            "/v1/auth/refresh" -> AuthStage.REFRESH_HTTP
+            "/v1/me" -> AuthStage.IDENTITY_HTTP
+            else -> null
+        }
         val requestId = Ids.newId()
         val correlationId = Ids.newId()
         val builder = Request.Builder().url(base.newBuilder().encodedPath(request.path.substringBefore('?'))
@@ -146,11 +157,14 @@ class ApiClient(
             continuation.invokeOnCancellation { call.cancel() }
             call.enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
+                    authStage?.let { authDiagnostics.report(it, if (e is javax.net.ssl.SSLException) AuthReason.TLS_FAILURE else AuthReason.TRANSPORT_FAILURE) }
                     if (continuation.isActive) continuation.resume(
                         (if (request.mutation) ApiResult.OutcomeUnknown else ApiResult.Failure(
                             if (e is javax.net.ssl.SSLException) "TLS_ERROR" else "TRANSPORT_ERROR")) to null)
                 }
                 override fun onResponse(call: Call, response: Response) {
+                    authStage?.let { authDiagnostics.report(it, if (response.isSuccessful) AuthReason.OK else AuthReason.HTTP_FAILURE,
+                        response.code, response.header("X-Request-ID")) }
                     val result = response.use {
                         try {
                             val source = response.body?.source()
@@ -188,6 +202,7 @@ class ApiClient(
                             }
                             mapped to response.header("Retry-After")
                         } catch (_: Exception) {
+                            authStage?.let { authDiagnostics.report(it, AuthReason.INVALID_RESPONSE, response.code, response.header("X-Request-ID")) }
                             (if (request.mutation) ApiResult.OutcomeUnknown else ApiResult.Failure("INVALID_RESPONSE")) to null
                         }
                     }

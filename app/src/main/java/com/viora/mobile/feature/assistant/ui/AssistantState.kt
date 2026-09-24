@@ -52,7 +52,8 @@ class AssistantViewModel(private val repository: AssistantRepository, private va
                 result.status in setOf(401,403) -> "DENIED"
                 result.status == 410 -> "EXPIRED"
                 result.status == 404 -> "NOT_FOUND"
-                result.status == 412 || result.code in setOf("CONTEXT_STALE","VERSION_CONFLICT") -> "STALE"
+                result.code == "ASSURANCE_PROVIDER_NOT_CONFIGURED" -> "ASSURANCE_UNAVAILABLE"
+                result.status in setOf(409,412) || result.code in setOf("CONTEXT_STALE","VERSION_CONFLICT") -> "STALE"
                 else -> "ERROR"
             }
             else -> "ERROR"
@@ -191,13 +192,13 @@ class AssistantViewModel(private val repository: AssistantRepository, private va
         val d=mutable.value.draft ?: throw ResultFailure(ApiResult.OutcomeUnknown)
         val record=value(handoff.readCommitted(e)); val approved=value(repository.draft(d.id))
         if(e.operationId!=request.operation.operationId || e.recordId!=request.target.recordId ||
-            e.recordVersion.toLong()!=request.target.currentVersion.toLong()+1 || record.id!=e.recordId ||
+            e.recordVersion.toLong()!=Math.addExact(request.target.currentVersion.toLong(),1) || record.id!=e.recordId ||
             record.current.id!=e.recordVersionId || record.currentVersion!=e.recordVersion || record.versionToken!=e.recordVersionToken ||
             record.workspaceId!=request.target.workspaceId || record.patientId!=d.patientId || record.encounterId!=d.encounterId ||
             record.status!="DRAFT" || record.reviewedVersion!=null || record.current.kind!="AI_HANDOFF" || record.current.sourceDraftId!=d.id ||
             record.current.createdBy!=request.session.userId || record.current.createdAt!=e.committedAt ||
-            e.recordVersionToken==request.target.versionToken || e.approvedDraftVersionToken==request.reviewedVersionToken ||
-            !sameContent(record.current.content,d.content) || approved.status!="APPROVED" || approved.versionToken!=e.approvedDraftVersionToken ||
+            e.recordVersionToken==request.target.versionToken || e.approvedDraftVersionToken!=request.reviewedVersionToken ||
+            !sameContent(record.current.content,d.content) || approved.status!="APPROVED" || approved.versionToken==e.approvedDraftVersionToken ||
             approved.approvedBy!=request.session.userId || approved.targetRecordId!=request.target.recordId ||
             approved.targetVersionToken!=request.target.versionToken || approved.handoff?.same(e)!=true)
             throw ResultFailure(ApiResult.OutcomeUnknown)
@@ -236,3 +237,5 @@ class AssistantViewModel(private val repository: AssistantRepository, private va
     }
     private class ResultFailure(val result: ApiResult<Nothing>): Exception()
 }
+
+

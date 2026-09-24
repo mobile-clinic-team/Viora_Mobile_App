@@ -1,5 +1,7 @@
 # Viora Mobile — documentation and architecture preparation
 
+> **Historical proposal snapshot (2026-09-08).** This README describes the earlier documentation-only migration audit. The current checkout contains an Android foundation; current implementation, synthetic boundaries, and verification status are maintained in the root `README.md` and `docs/` set. The original audit scope is retained.
+
 Audit date: 2026-09-08. Deliverable status: **PROPOSED mobile specification; documentation audit complete; implementation and release are blocked by the dependencies below.**
 
 Product: **Viora Mobile — Clinic Management Mobile App with Medical AI Assistant**. This set defines a future installed mobile application. It creates no application, backend change, database change, CI workflow, or approved mobile technology decision.

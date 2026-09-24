@@ -1,0 +1,21 @@
+▶ Phase 6 Run 1 real PostgreSQL authorized reads, retrieval, summary and audit
+  ✔ authorized Patient read excludes internal and contact fields (10.564ms)
+  ✔ unauthorized and cross-tenant Patient reads are non-disclosing (10.6483ms)
+  ✔ Clinical reads reuse grant, role ceiling and relationship authorization (14.2012ms)
+  ✔ approved retrieval excludes foreign, draft and unauthorized documents and retains metadata (12.5968ms)
+  ✔ knowledge relationship and vector constraints reject invalid writes and requests (3.1932ms)
+  ✔ summary uses only authorized context and returns transient source identities (26.8789ms)
+  ✔ summary denial prevents provider dispatch (3.8639ms)
+  ✔ missing production governance fails closed for read retrieval and summary (16.2096ms)
+  ✔ audit records authenticated session, actor, scope and source IDs without payload (1.2091ms)
+  ✔ session mismatches and expiry cannot bind (0.479ms)
+  ✔ real PostgreSQL audit rejection remains typed and blocks summary disclosure (25.739ms)
+✔ Phase 6 Run 1 real PostgreSQL authorized reads, retrieval, summary and audit (409.6646ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 841.4236

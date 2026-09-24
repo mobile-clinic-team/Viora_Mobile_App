@@ -1,0 +1,28 @@
+✔ recovery exposes the client key and metadata only, preserves unknown states without expiry (5.2496ms)
+✔ OP02 and OP03 authorize result references before mandatory audit or disclosure (6.3219ms)
+✔ OP01 rejects invalid filters, repeated parameters and tampered cursors before queries (2.1425ms)
+✔ BD-02 requires identity fields, permits old DOB and single Unicode names, rejects extra mutation fields (6.3454ms)
+✔ P04 distinguishes missing, malformed and valid-but-stale opaque validators without numeric rounding (0.6415ms)
+✔ BD-01 Patient mutations require grants, role ceilings and current Doctor relationship; receptionist purpose is closed (1.2337ms)
+✔ admission generates an operation ID and preserves the concurrent database winner (3.3885ms)
+✔ PROCESSING repeats preserve the original result and reject different intent (0.4029ms)
+✔ INDETERMINATE repeats preserve the original result and reject different intent (0.1554ms)
+✔ SUCCEEDED repeats preserve the original result and reject different intent (0.1539ms)
+✔ FAILED repeats preserve the original result and reject different intent (0.1668ms)
+✔ CLOSED repeats preserve the original result and reject different intent (0.5231ms)
+✔ invalid identity, fingerprint and timestamp fail before database access (0.8689ms)
+✔ admission accepts exact timestamp window boundaries (1.0171ms)
+✔ completion atomically links the primary resource and preserves bigint precision (0.8858ms)
+✔ complete fences stale or terminal callers by exact identity, intent and operation ID (1.7487ms)
+✔ fail fences stale or terminal callers by exact identity, intent and operation ID (0.5955ms)
+✔ known failure persists public error and HTTP status (0.2362ms)
+✔ database/ref errors propagate unchanged to the owning transaction (0.5071ms)
+✔ invalid results cannot settle an operation (1.0452ms)
+ℹ tests 20
+ℹ suites 0
+ℹ pass 20
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 775.4499

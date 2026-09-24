@@ -44,24 +44,24 @@ class OperationalNavigationContribution(private val screens: OperationalDestinat
     override val routeKeys = setOf("patients", "schedule", "doctors", "patient-detail", "doctor-detail", "appointment-detail",
         "patient-picker", "doctor-picker", "appointment-create", "appointment-edit", "patient-agenda")
     override fun register(builder: NavGraphBuilder, dependencies: NavigationDependencies) = with(builder) {
-        composable<Patients> { screens.patients(null, dependencies) }
-        composable<Schedule> { screens.agenda(null, dependencies) }
-        composable<Doctors> { screens.doctors(null, dependencies) }
-        composable<PatientPickerRoute> { entry -> val route = entry.toRoute<PatientPickerRoute>()
+        authorizedComposable<Patients>(dependencies) { screens.patients(null, dependencies) }
+        authorizedComposable<Schedule>(dependencies) { screens.agenda(null, dependencies) }
+        authorizedComposable<Doctors>(dependencies) { screens.doctors(null, dependencies) }
+        authorizedComposable<PatientPickerRoute>(dependencies) { entry -> val route = entry.toRoute<PatientPickerRoute>()
             valid(route.pickerHandle) { screens.patients(route.pickerHandle, dependencies) } }
-        composable<PatientDetailRoute> { entry -> val route = entry.toRoute<PatientDetailRoute>()
+        authorizedComposable<PatientDetailRoute>(dependencies) { entry -> val route = entry.toRoute<PatientDetailRoute>()
             valid(route.id) { screens.patient(route.id, dependencies) } }
-        composable<DoctorPickerRoute> { entry -> val route = entry.toRoute<DoctorPickerRoute>()
+        authorizedComposable<DoctorPickerRoute>(dependencies) { entry -> val route = entry.toRoute<DoctorPickerRoute>()
             valid(route.pickerHandle) { screens.doctors(route.pickerHandle, dependencies) } }
-        composable<DoctorDetailRoute> { entry -> val route = entry.toRoute<DoctorDetailRoute>()
+        authorizedComposable<DoctorDetailRoute>(dependencies) { entry -> val route = entry.toRoute<DoctorDetailRoute>()
             valid(route.id, route.pickerHandle) { screens.doctor(route.id, route.pickerHandle, dependencies) } }
-        composable<AgendaRoute> { entry -> val route = entry.toRoute<AgendaRoute>()
+        authorizedComposable<AgendaRoute>(dependencies) { entry -> val route = entry.toRoute<AgendaRoute>()
             valid(route.patientId) { screens.agenda(route.patientId, dependencies) } }
-        composable<AppointmentCreateRoute> { entry -> val route = entry.toRoute<AppointmentCreateRoute>()
+        authorizedComposable<AppointmentCreateRoute>(dependencies) { entry -> val route = entry.toRoute<AppointmentCreateRoute>()
             valid(route.patientId, route.doctorId) { screens.create(route.patientId, route.doctorId, dependencies) } }
-        composable<AppointmentDetailRoute> { entry -> val route = entry.toRoute<AppointmentDetailRoute>()
+        authorizedComposable<AppointmentDetailRoute>(dependencies) { entry -> val route = entry.toRoute<AppointmentDetailRoute>()
             valid(route.id) { screens.appointment(route.id, dependencies) } }
-        composable<AppointmentEditRoute> { entry -> val route = entry.toRoute<AppointmentEditRoute>()
+        authorizedComposable<AppointmentEditRoute>(dependencies) { entry -> val route = entry.toRoute<AppointmentEditRoute>()
             valid(route.id) { screens.edit(route.id, dependencies) } }
     }
     @Composable private fun valid(vararg ids: String?, content: @Composable () -> Unit) {

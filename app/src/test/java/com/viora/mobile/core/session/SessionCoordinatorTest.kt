@@ -129,7 +129,7 @@ class SessionCoordinatorTest {
 
     @Test fun unknownPermissionNeverGrantsAnAction() {
         val context = WorkspaceContext(A, "Demo", "Asia/Ho_Chi_Minh", "\"policy-1\"",
-            setOf("patient.read", "superuser.everything"))
+            setOf("patient.read", "superuser.everything"), membershipId = A, role = "DOCTOR")
         assertTrue(context.allows("patient.read"))
         assertFalse(context.allows("superuser.everything"))
         assertFalse(context.allows("draft.approve"))

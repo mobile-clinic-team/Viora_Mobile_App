@@ -7,6 +7,9 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.text.style.TextOverflow
+import com.viora.mobile.core.ui.*
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -16,7 +19,10 @@ import androidx.navigation.toRoute
 import com.viora.mobile.core.model.Ids
 import com.viora.mobile.core.session.SessionPhase
 import com.viora.mobile.core.session.SessionState
+import com.viora.mobile.core.session.AppRole
+import com.viora.mobile.core.session.Authorization
 import com.viora.mobile.app.navigation.NavigationDependencies
+import com.viora.mobile.app.navigation.RouteAuthorization
 import com.viora.mobile.feature.auth.ui.LoginScreen
 import com.viora.mobile.feature.appointments.ui.OperationalNavigator
 import com.viora.mobile.feature.workspace.ui.WorkspaceScreen
@@ -25,15 +31,19 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun AppShell(model: AppViewModel) {
+internal fun InternalWorkspaceShell(model: AppViewModel) {
     val state by model.session.collectAsStateWithLifecycle()
-    Column(Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding()) {
+    if (state.selectedRole !in setOf(AppRole.DOCTOR, AppRole.NURSE) ||
+        !Authorization.canEnter(state, state.selectedRole!!)) { AccessDenied(model::logout); return }
+    Surface(Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+    Column(Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding().imePadding()) {
         if (model.graph.synthetic) Surface(color = MaterialTheme.colorScheme.primaryContainer) {
-            Text("SYNTHETIC DEMO · No live patient data", Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 10.dp),
+            Text("DEMO · No live patient data", Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 6.dp),
                 style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onPrimaryContainer)
         }
         when (state.phase) {
-            SessionPhase.SIGNED_OUT -> LoginScreen(state.message, model.graph.synthetic, model::signIn)
+            SessionPhase.SIGNED_OUT -> LoginScreen(state.message, model.graph.synthetic, model::signIn, demoAccounts = model.graph.demoAccounts)
+            SessionPhase.SELECT_ROLE -> RolePicker(state, model)
             SessionPhase.RESTORING, SessionPhase.VALIDATING_WORKSPACE -> Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
                 CircularProgressIndicator(Modifier.align(androidx.compose.ui.Alignment.CenterHorizontally))
                 Text("Checking access…", Modifier.align(androidx.compose.ui.Alignment.CenterHorizontally).padding(16.dp))
@@ -43,6 +53,7 @@ fun AppShell(model: AppViewModel) {
             SessionPhase.READY -> key(state.authEpoch, state.contextEpoch) { ProtectedNavigation(state, model) }
         }
     }
+}
 }
 
 @Composable
@@ -62,7 +73,8 @@ private fun ProtectedNavigation(state: SessionState, model: AppViewModel) {
     val entry by nav.currentBackStackEntryAsState()
     val destination = entry?.destination
     fun home() { nav.popBackStack<Dashboard>(inclusive = false) }
-    fun tab(route: Any) { nav.navigate(route) { popUpTo<Dashboard> { inclusive = false }; launchSingleTop = true } }
+    fun tab(route: Any) { if (RouteAuthorization.allows(model.session.value, route::class))
+        nav.navigate(route) { popUpTo<Dashboard> { inclusive = false }; launchSingleTop = true } }
     var pendingExit by remember { mutableStateOf<(() -> Unit)?>(null) }
     fun exit(action: () -> Unit) {
         if (model.operationalFormDirty) pendingExit = action
@@ -73,7 +85,7 @@ private fun ProtectedNavigation(state: SessionState, model: AppViewModel) {
             private fun current() = model.session.value.let {
                 it.phase == SessionPhase.READY && it.authEpoch == state.authEpoch && it.contextEpoch == state.contextEpoch
             }
-            override fun navigate(route: Any) { if (current()) nav.navigate(route) }
+            override fun navigate(route: Any) { if (current() && RouteAuthorization.allows(model.session.value, route::class)) nav.navigate(route) }
             override fun back() { if (current() && !nav.popBackStack()) home() }
             override fun dirtyForm(dirty: Boolean) { if (current()) {
                 model.updateOperationalFormDirty(dirty)
@@ -91,32 +103,47 @@ private fun ProtectedNavigation(state: SessionState, model: AppViewModel) {
     BackHandler(!isHome) { if (!nav.popBackStack()) home() }
     Scaffold(
         topBar = {
-            Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp), horizontalArrangement = Arrangement.SpaceBetween) {
-                TextButton(onClick = { exit(::home) }) { Text("Viora · Home") }
-                TextButton(onClick = { exit(model::switchWorkspace) }) { Text("Switch clinic") }
+            Surface(color = MaterialTheme.colorScheme.background) {
+                Row(Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 4.dp),
+                    verticalAlignment = Alignment.CenterVertically) {
+                    IconButton(onClick = { exit { if (isHome) home() else if (!nav.popBackStack()) home() } }) {
+                        VioraIcon(if (isHome) "home" else "back", if (isHome) "Viora home" else "Back")
+                    }
+                    Column(Modifier.weight(1f).padding(horizontal = 8.dp)) {
+                        Text("Viora", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary)
+                        Text(state.workspace!!.name, style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    }
+                    TextButton(onClick = { exit(model::switchWorkspace) }) { Text("Switch clinic") }
+                }
             }
         },
         bottomBar = {
-            NavigationBar {
-                model.graph.navigation.tabs.forEach { item ->
+            NavigationBar(containerColor = MaterialTheme.colorScheme.surface, tonalElevation = 0.dp, windowInsets = WindowInsets(0, 0, 0, 0)) {
+                model.graph.navigation.tabs.filter { item -> item.id != "assistant" || state.workspace!!.allows("assistant.use") }.forEach { item ->
                     NavigationBarItem(selected = item.isSelected(destination), onClick = { exit { tab(item.route) } },
-                        icon = { Text(item.iconText) }, label = { Text(item.label) })
+                        icon = { VioraIcon(item.id) }, label = { Text(item.label) })
                 }
             }
         }
     ) { padding ->
         NavHost(navController = nav, startDestination = Dashboard, modifier = Modifier.padding(padding)) {
             composable<Dashboard> {
-                Page("Your clinic, at a glance") {
-                    Text(state.workspace!!.name, style = MaterialTheme.typography.titleLarge)
-                    Text(LocalDate.now(ZoneId.of(state.workspace.timezone)).format(DateTimeFormatter.ofPattern("EEEE, d MMMM")))
-                    Spacer(Modifier.height(12.dp))
-                    Card(Modifier.fillMaxWidth()) { Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                        Text("Welcome, " + state.user!!.displayName, style = MaterialTheme.typography.titleMedium)
-                        Text("The foundation is ready to explore. Care workflows will appear here as they become available.")
-                    } }
-                    OutlinedButton(onClick = { tab(Schedule) }, modifier = Modifier.fillMaxWidth()) { Text("Open schedule") }
-                    Text("No live appointments are loaded.", style = MaterialTheme.typography.bodyMedium)
+                Page(if (state.selectedRole == AppRole.NURSE) "Nurse workspace" else "Doctor workspace") {
+                    Text(LocalDate.now(ZoneId.of(state.workspace!!.timezone)).format(DateTimeFormatter.ofPattern("EEEE, d MMMM")),
+                        style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Surface(shape = MaterialTheme.shapes.large, color = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary) {
+                        Column(Modifier.fillMaxWidth().padding(20.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                            Text("Welcome, " + state.user!!.displayName, style = MaterialTheme.typography.titleLarge)
+                            Text("Find a patient, plan the day or explore your care workspace.", style = MaterialTheme.typography.bodyLarge)
+                        }
+                    }
+                    Text("Your workspace", style = MaterialTheme.typography.titleMedium)
+                    ActionRow("Patient directory", "Search and open patient profiles", "patients", { tab(Patients) })
+                    ActionRow("Open schedule", "Appointments and your care team", "schedule", { tab(Schedule) })
+                    if (state.workspace!!.allows("assistant.use")) ActionRow("Care assistant", "Conversations and drafts for review", "assistant", { tab(Assistant) })
+                    if (state.selectedRole == AppRole.NURSE) InfoPanel("Permitted care workflows", "Read accessible patients, schedules and clinical records. Medical and administrative changes are unavailable.")
                 }
             }
             if (!model.graph.navigation.provides("patients")) {
@@ -135,11 +162,22 @@ private fun ProtectedNavigation(state: SessionState, model: AppViewModel) {
                 composable<Assistant> { UnavailablePage("Care assistant", "AI assistance is unavailable. No questions or clinical content are sent.") }
             }
             composable<Account> { Page("Your account") {
-                Text(state.user!!.displayName, style = MaterialTheme.typography.titleLarge)
-                Text(state.workspace!!.name)
-                Text("Demo permissions do not authorize clinical actions.")
-                OutlinedButton(onClick = { exit(model::switchWorkspace) }) { Text("Choose another clinic") }
-                Button(onClick = { exit(model::logout) }) { Text("Sign out") }
+                Surface(shape = MaterialTheme.shapes.large, color = MaterialTheme.colorScheme.surface) {
+                    Row(Modifier.fillMaxWidth().padding(20.dp), verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                        IconBadge("account")
+                        Column {
+                            Text(state.user!!.displayName, style = MaterialTheme.typography.titleLarge)
+                            Text("Signed in", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        }
+                    }
+                }
+                Text("Current workspace", style = MaterialTheme.typography.titleMedium)
+                ActionRow(state.workspace!!.name, "Choose another clinic", "clinic", { exit(model::switchWorkspace) })
+                if (model.graph.synthetic) InfoPanel("Demo account", "Demo permissions do not authorize clinical actions.")
+                OutlinedButton(onClick = { exit(model::logout) }, modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp)) {
+                    VioraIcon("logout"); Spacer(Modifier.width(10.dp)); Text("Sign out")
+                }
             } }
             composable<ClinicalEntryPlaceholderRoute> { entry ->
                 val route = entry.toRoute<ClinicalEntryPlaceholderRoute>()
@@ -170,7 +208,7 @@ private fun androidx.navigation.NavGraphBuilder.registerFeatureNavigation(model:
 }
 @Composable private fun Page(title: String, content: @Composable ColumnScope.() -> Unit) {
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(24.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
-        Text(title, style = MaterialTheme.typography.headlineMedium)
+        ScreenHeading(title)
         content()
     }
 }

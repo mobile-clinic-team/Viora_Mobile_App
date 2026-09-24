@@ -1,5 +1,7 @@
 # Mobile architecture
 
+> **Historical proposal snapshot (2026-09-08).** This document records a proposed architecture before the Android foundation was created. Current implementation evidence is maintained in the root `docs/` set; this proposal remains a target/design record.
+
 Status: **PROPOSED**. Final framework is **ARCHITECTURE DECISION REQUIRED**; Kotlin/Compose is the conditional Android-first default in [ADR-M01](MOBILE-ARCHITECTURE-DECISIONS.md). No mobile architecture is approved or implemented by this batch.
 
 ## Boundary

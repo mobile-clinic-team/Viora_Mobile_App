@@ -12,7 +12,7 @@ import java.net.URLEncoder
 
 /** AI08 is one server transaction. This adapter never writes a clinical repository or compensates a failed handoff. */
 class HttpClinicalHandoff(private val requests: AuthenticatedRequestPort, private val session: SessionPort,
-    private val assurance: StepUpController, private val reads: ClinicalReadRepository, private val clock: AppClock) : ClinicalHandoffPort {
+    private val assurance: StepUpController?, private val reads: ClinicalReadRepository, private val clock: AppClock) : ClinicalHandoffPort {
     override suspend fun request(request: ClinicalHandoffRequest): ApiResult<HandoffEvidence> {
         val current = session.snapshot() ?: return ApiResult.StaleScope
         if (!sameAssuranceSession(request.session, current)) return ApiResult.StaleScope
@@ -23,7 +23,7 @@ class HttpClinicalHandoff(private val requests: AuthenticatedRequestPort, privat
             return ApiResult.Failure("OPERATION_EXPIRED", 410)
         val binding = AssuranceBinding("draft.approve", request.target.workspaceId, request.draftId,
             request.reviewedVersionToken, request.target.versionToken)
-        if (!assurance.consume(request.assurance, binding, request.target.recordId, current))
+        if (assurance?.consume(request.assurance, binding, request.target.recordId, current) != true)
             return ApiResult.Failure("ASSURANCE_REQUIRED", 403)
         val body = buildJsonObject {
             put("targetRecordId", request.target.recordId); put("targetVersionToken", request.target.versionToken)
@@ -39,7 +39,7 @@ class HttpClinicalHandoff(private val requests: AuthenticatedRequestPort, privat
                 require(receipt.draftId == request.draftId && e.recordId == request.target.recordId)
                 require(e.recordVersion.toLong() == Math.addExact(request.target.currentVersion.toLong(), 1))
                 require(e.recordVersionId != request.target.recordVersionId && e.recordVersionToken != request.target.versionToken &&
-                    e.approvedDraftVersionToken != request.reviewedVersionToken)
+                    e.approvedDraftVersionToken == request.reviewedVersionToken)
                 ApiResult.Success(e)
             } catch (_: Exception) { ApiResult.OutcomeUnknown }
             is ApiResult.Failure -> result
@@ -92,3 +92,4 @@ class HttpHandoffRecovery(private val requests: AuthenticatedRequestPort, privat
         ApiResult.StaleScope -> ApiResult.StaleScope
     }
 }
+

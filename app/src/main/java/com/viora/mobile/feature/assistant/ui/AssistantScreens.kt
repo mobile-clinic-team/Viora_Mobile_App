@@ -24,6 +24,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.viora.mobile.app.navigation.NavigationDependencies
 import com.viora.mobile.core.time.AppClock
+import com.viora.mobile.core.ui.*
 import com.viora.mobile.feature.assistant.domain.*
 import com.viora.mobile.feature.clinical.domain.*
 import kotlinx.coroutines.delay
@@ -39,11 +40,16 @@ class AssistantScreens(private val repository: AssistantRepository,private val c
     })
     @Composable fun Home(deps: NavigationDependencies) {
         val model=model(deps); val state by model.state.collectAsStateWithLifecycle()
-        LaunchedEffect(model) { if(state.phase=="LOADING" && !state.busy) model.home() }
+        LaunchedEffect(model) { if(state.phase=="LOADING" && !state.busy) { if(synthetic) model.home() else model.discoverOutstanding() } }
         Page("Care assistant",state,model) {
-            if(state.phase=="EMPTY") Text("No conversations yet.")
+            if(state.phase=="EMPTY") UiStatePanel(UiStateKind.EMPTY, "No conversations yet", "Start a conversation when you have an authorized care context.", "assistant")
             if(state.phase in setOf("READY","EMPTY")) {
-                Button(onClick={navigate(AssistantCreateRoute())}) { Text("New conversation") }
+                if(synthetic) Button(onClick={navigate(AssistantCreateRoute())}) { Text("New conversation") }
+                else {
+                    Text("Open an existing authorized AI draft for human review.")
+                    PrivateInput("Draft identifier",state.input,model::input)
+                    Button(onClick={navigate(AssistantDraftRoute(state.input.trim()))}, enabled=com.viora.mobile.core.model.Ids.valid(state.input.trim())) { Text("Open draft for review") }
+                }
                 state.conversations.forEachIndexed { index,c ->
                     OutlinedButton(onClick={navigate(AssistantConversationRoute(c.id))}) { Text("Conversation ${index+1} · ${c.context.kind}") }
                 }
@@ -109,7 +115,7 @@ class AssistantScreens(private val repository: AssistantRepository,private val c
                 Text("AI-generated draft — explicit human review required",style=MaterialTheme.typography.titleMedium)
                 Text("Draft state: ${draft.status}"); Text("Draft version: ${draft.versionToken}")
                 Text("Target record version: ${target.currentVersion}"); Text("Target validator: ${draft.targetVersionToken}")
-                Text("Generated: ${draft.createdAt}"); Text("Expires: ${draft.expiresAt} · checked by synthetic server")
+                Text("Generated: ${draft.createdAt}"); Text("Expires: ${draft.expiresAt} · checked by server")
                 if(synthetic) Text("Generator: deterministic synthetic simulator. No provider was contacted.")
                 Text("Provenance",style=MaterialTheme.typography.titleMedium)
                 draft.provenance.forEach { p -> Text(p.label); Text("${p.kind} · ${p.sourceId} · version ${p.sourceVersion}"); p.excerpt?.let { Text(it) } }
@@ -124,7 +130,7 @@ class AssistantScreens(private val repository: AssistantRepository,private val c
                         val edit=state.edit
                         if(edit==null) {
                             OutlinedButton(onClick={model.edit(draft.content)}) { Text("Edit reviewed content") }
-                            Button(onClick=model::requestAssurance) { Text("Request demo step-up") }
+                            Button(onClick=model::requestAssurance) { Text(if(synthetic) "Request demo step-up" else "Verify identity for approval") }
                             OutlinedButton(onClick=model::reject) { Text("Reject draft") }
                         } else {
                             PrivateInput("Edit diagnosis",edit.diagnosis,{model.edit(ClinicalContent(it,edit.symptoms,edit.clinicalNotes,edit.treatmentPlan))})
@@ -137,14 +143,14 @@ class AssistantScreens(private val repository: AssistantRepository,private val c
                 }
                 if(state.receipt!=null) Button(onClick={model.acknowledge()}) { Text("Acknowledge review result") }
                 if(state.evidence!=null) {
-                    Text("Synthetic handoff verified. No clinical record was written or finalized.",Modifier.semantics { liveRegion=LiveRegionMode.Polite })
-                    Text("Simulated committed version: ${state.evidence!!.recordVersion}")
+                    Text(if(synthetic) "Synthetic handoff verified. No clinical record was written or finalized." else "Clinical handoff verified. The clinical record remains a draft.",Modifier.semantics { liveRegion=LiveRegionMode.Polite })
+                    Text("Verified version: ${state.evidence!!.recordVersion}")
                     Text("Audit reference: ${state.evidence!!.auditEventId}")
-                    Button(onClick={ if(state.pending!=null) model.acknowledge { clinicalNavigation.open(target.reference()) } else clinicalNavigation.open(target.reference()) }) { Text("Open unchanged clinical record") }
+                    Button(onClick={ if(state.pending!=null) model.acknowledge { clinicalNavigation.open(target.reference()) } else clinicalNavigation.open(target.reference()) }) { Text(if(synthetic) "Open unchanged clinical record" else "Open verified clinical record") }
                 }
             }
             if(state.confirmation) AlertDialog(onDismissRequest=model::cancelConfirmation,
-                title={Text("Confirm reviewed handoff")},text={Text("The draft and target were rechecked. Explicitly approve this synthetic handoff. It will not write or finalize a clinical record.")},
+                title={Text("Confirm reviewed handoff")},text={Text(if(synthetic) "The draft and target were rechecked. Explicitly approve this synthetic handoff. It will not write or finalize a clinical record." else "The draft and target were rechecked. Approve this exact reviewed content for the existing clinical record? The record will remain a draft.")},
                 confirmButton={TextButton(onClick=model::approve) { Text("Approve reviewed draft") }},
                 dismissButton={TextButton(onClick=model::cancelConfirmation) { Text("Cancel approval") }})
         }
@@ -166,17 +172,18 @@ class AssistantScreens(private val repository: AssistantRepository,private val c
             if(synthetic) Text("Synthetic assistant · no real patient information or provider")
             OutlinedButton(onClick={if(isDirty) discard=true else back()}) { Text("Return") }
             when(state.phase) {
-                "LOADING" -> Text("Loading assistant…")
-                "DENIED" -> Text("Assistant access denied.")
-                "EXPIRED" -> Text("Draft or conversation expired. Approval is unavailable.")
-                "STALE" -> Text("Context or target changed. Reload and review; generate a new draft for a changed target.")
-                "NOT_FOUND" -> Text("Assistant content is unavailable.")
-                "ERROR" -> Text("Assistant information could not be verified.")
-                "RESOLVED_FAILURE" -> Text("Operation did not commit. Review before starting a new explicit attempt.")
+                "LOADING" -> UiStatePanel(UiStateKind.LOADING, "Loading", "Loading assistant…")
+                "ASSURANCE_UNAVAILABLE" -> UiStatePanel(UiStateKind.UNAVAILABLE, "Identity verification unavailable", "The identity provider for approval is not configured. Approval remains blocked.")
+                "DENIED" -> UiStatePanel(UiStateKind.DENIED, "Assistant access denied", "You do not have permission to use this assistant.")
+                "EXPIRED" -> UiStatePanel(UiStateKind.UNAVAILABLE, "Assistant content expired", "Draft or conversation expired. Approval is unavailable.")
+                "STALE" -> UiStatePanel(UiStateKind.ERROR, "Assistant context changed", "Reload and review; generate a new draft for a changed target.")
+                "NOT_FOUND" -> UiStatePanel(UiStateKind.UNAVAILABLE, "Assistant content unavailable", "Assistant content is unavailable.")
+                "ERROR" -> UiStatePanel(UiStateKind.ERROR, "Assistant information could not be verified.", "Review the context and reload before continuing.")
+                "RESOLVED_FAILURE" -> UiStatePanel(UiStateKind.ERROR, "Operation did not commit", "Review before starting a new explicit attempt.")
                 "RECOVERY_REQUIRED" -> { Text("Resolve existing operations before submitting another intent."); Button(onClick=model::discoverOutstanding) { Text("Find unresolved operation") } }
-                "UNKNOWN","VERIFICATION_UNAVAILABLE" -> Text("Outcome unknown. Stopping the wait does not prove cancellation. Do not resubmit.")
-                "GENERATING" -> Text("Waiting for synchronous result…")
-                "CLEARED" -> Text("Assistant context cleared.")
+                "UNKNOWN","VERIFICATION_UNAVAILABLE" -> UiStatePanel(UiStateKind.ERROR, "Outcome unknown", "Stopping the wait does not prove cancellation. Do not resubmit.")
+                "GENERATING" -> UiStatePanel(UiStateKind.LOADING, "Waiting for result", "Waiting for synchronous result…")
+                "CLEARED" -> UiStatePanel(UiStateKind.SUCCESS, "Assistant context cleared", "The assistant context has been cleared.")
             }
             if(state.phase in setOf("ERROR","STALE","EXPIRED","NOT_FOUND") && state.pending==null) Button(onClick=model::retry) { Text("Reload assistant") }
             if(state.pending!=null && state.phase !in setOf("SAVED","HANDOFF")) {
@@ -213,3 +220,5 @@ class AssistantScreens(private val repository: AssistantRepository,private val c
         doAfterTextChanged { changed(it?.toString().orEmpty()) }
     } },update={ if(it.text.toString()!=value) it.setText(value) })
 }
+
+

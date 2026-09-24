@@ -48,9 +48,9 @@ data class WorkspaceContext(
         membershipId?.let { require(Ids.valid(it)) }
         role?.let { require(it.isNotBlank() && it.length <= 64 && it.all { c -> c.isLetterOrDigit() || c == '_' || c == '-' }) }
     }
-    fun allows(permission: String): Boolean = permission in KNOWN_PERMISSIONS && permission in permissions
+    fun allows(permission: String): Boolean = permission in permissions && Authorization.permits(AppRole.parse(role), permission)
     companion object {
-        private val KNOWN_PERMISSIONS = setOf(
+        val CLINICAL_PERMISSIONS = setOf(
             "patient.read", "patient.create", "patient.update", "doctor.read",
             "appointment.read", "appointment.create", "appointment.reschedule", "appointment.confirm",
             "appointment.cancel", "appointment.checkIn", "appointment.start", "appointment.complete", "appointment.noShow",
@@ -92,6 +92,8 @@ data class StoredCredential(
     val userId: String,
     val refreshToken: String,
     val refreshExpiresAt: String,
+    val selectedRole: String? = null,
+    val selectedWorkspace: String? = null,
 ) {
     fun validate() {
         require(schemaVersion == 1 && Ids.valid(sessionId) && Ids.valid(userId))
@@ -101,7 +103,7 @@ data class StoredCredential(
     override fun toString(): String = "StoredCredential(REDACTED)"
 }
 
-enum class SessionPhase { RESTORING, SIGNED_OUT, SELECT_WORKSPACE, VALIDATING_WORKSPACE, READY }
+enum class SessionPhase { RESTORING, SIGNED_OUT, SELECT_ROLE, SELECT_WORKSPACE, VALIDATING_WORKSPACE, READY }
 data class SessionState(
     val phase: SessionPhase = SessionPhase.RESTORING,
     val authEpoch: Long = 0,
@@ -110,7 +112,16 @@ data class SessionState(
     val memberships: List<Membership> = emptyList(),
     val workspace: WorkspaceContext? = null,
     val message: String? = null,
-)
+    val selectedRole: AppRole? = null,
+    val serverAuthority: Boolean = false,
+) {
+    val roles: Set<AppRole> get() = memberships.filter { it.active && it.userId == user?.id }
+        .mapNotNull { AppRole.parse(it.role) }.toSet()
+    val authorizedMemberships: List<Membership> get() = memberships.filter {
+        it.active && it.userId == user?.id && ((serverAuthority && selectedRole == null) ||
+            (AppRole.parse(it.role) == selectedRole && selectedRole != null))
+    }
+}
 class SessionSnapshot(
     val authEpoch: Long,
     val contextEpoch: Long,
@@ -131,9 +142,17 @@ interface SessionAuthGateway {
     suspend fun revoke(credential: StoredCredential)
     suspend fun user(accessToken: String): User
 }
+data class ServerIdentity(val user: User, val sessionId: String, val persona: AppRole?,
+    val memberships: List<Membership>, val workspace: WorkspaceContext?, val requiresWorkspaceSelection: Boolean)
+interface PasswordAuthGateway {
+    suspend fun login(email: String, password: String): TokenBundle
+    suspend fun register(email: String, password: String, displayName: String)
+    suspend fun identity(accessToken: String): ServerIdentity
+}
 interface WorkspaceGateway {
     suspend fun memberships(accessToken: String): List<Membership>
     suspend fun validate(accessToken: String, workspaceId: String): WorkspaceContext
+    suspend fun validate(accessToken: String, workspaceId: String, role: AppRole): WorkspaceContext = validate(accessToken, workspaceId)
 }
 
 /** Stable application-facing session contract consumed by feature code. */
@@ -141,6 +160,9 @@ interface SessionPort {
     val state: kotlinx.coroutines.flow.StateFlow<SessionState>
     suspend fun restore()
     suspend fun signIn()
+    suspend fun register(email: String, password: String, displayName: String) { error("Registration unavailable") }
+    suspend fun signIn(email: String, password: String) { error("Local authentication unavailable") }
+    suspend fun selectRole(role: AppRole) { error("Role selection unavailable") }
     suspend fun acceptTokenBundle(bundle: TokenBundle)
     suspend fun snapshot(requireWorkspace: Boolean = true): SessionSnapshot?
     suspend fun refresh(rejectedAccessToken: String? = null): TokenBundle?

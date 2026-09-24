@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.nx/
+.tmp/
+.env
+.env.*
+*.log
+*.txt
+*.test.ts

@@ -20,7 +20,7 @@ import com.viora.mobile.feature.patients.domain.Patient
 import com.viora.mobile.feature.patients.domain.PatientField
 import java.time.LocalDate
 
-class EnvironmentBindings(private val clock: AppClock) : OperationalEnvironmentBindings {
+class EnvironmentBindings(private val clock: AppClock, @Suppress("UNUSED_PARAMETER") api: com.viora.mobile.core.network.ApiClient? = null) : OperationalEnvironmentBindings {
     private val backend = FakeBackend(clock)
     override val synthetic = true
     val auth = backend

@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.delay
+import com.viora.mobile.core.session.SessionPhase
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 
@@ -22,6 +24,8 @@ class AppViewModel(val graph: AppGraph) : ViewModel() {
         }
     }
     val session = graph.session.state
+    var signingIn by androidx.compose.runtime.mutableStateOf(false)
+        private set
     init {
         graph.scope.launch { graph.session.restore() }
         viewModelScope.launch {
@@ -39,7 +43,16 @@ class AppViewModel(val graph: AppGraph) : ViewModel() {
             }
         }
     }
-    fun signIn() { graph.scope.launch { graph.session.signIn() } }
+    fun signIn(email: String, password: String) {
+        if (signingIn || session.value.phase != SessionPhase.SIGNED_OUT) return
+        signingIn = true
+        graph.scope.launch {
+            try { delay(450); graph.session.signIn(email, password) }
+            finally { signingIn = false }
+        }
+    }
+    suspend fun register(email: String, password: String, displayName: String) = graph.register(email, password, displayName)
+    fun selectRole(role: com.viora.mobile.core.session.AppRole) { graph.scope.launch { graph.session.selectRole(role) } }
     fun selectWorkspace(id: String) { graph.scope.launch { graph.session.selectWorkspace(id) } }
     fun switchWorkspace() { graph.scope.launch { graph.session.chooseWorkspace() } }
     fun logout() { graph.scope.launch { graph.session.logout() } }

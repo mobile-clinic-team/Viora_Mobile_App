@@ -1,0 +1,6 @@
+{
+  "name": "ai-data-access",
+  "projectType": "library",
+  "sourceRoot": "libs/ai/data-access",
+  "tags": ["boundary:ai-data-access", "scope:ai", "type:data-access"]
+}

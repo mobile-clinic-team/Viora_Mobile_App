@@ -1,5 +1,7 @@
 # Current and proposed mobile project structure
 
+> **Historical proposal snapshot (2026-09-08).** The “currently exists” inventory below describes the documentation-only audit at that time. The current checkout now contains an Android project under `app/`; use the root architecture and grading documents for current implementation evidence. The proposed tree and original wording are retained as history.
+
 Status: **PROPOSED only; no source, Gradle or Android Studio files created.** Framework/placement are ADR-M01/ADR-M17 in [the decision register](MOBILE-ARCHITECTURE-DECISIONS.md).
 
 ## CURRENTLY EXISTS

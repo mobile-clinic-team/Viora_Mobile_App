@@ -53,8 +53,12 @@ class TestBackend(val clock: FakeClock) : SessionAuthGateway, WorkspaceGateway {
         Membership(B, USER, B, "Demo B", "DOCTOR", true))
     fun bundle(session: String = SESSION) = TokenBundle(session, USER, "access-" + Ids.newId(),
         clock.now().plusSeconds(600), "refresh-" + Ids.newId(), initialExpiry, clock.now())
-    fun context(id: String) = WorkspaceContext(id, if (id == A) "Demo A" else "Demo B",
-        "Asia/Ho_Chi_Minh", "\"policy-1\"", if (id == A) setOf("patient.read") else emptySet())
+    fun context(id: String): WorkspaceContext {
+        val membership = membershipValues.single { it.workspaceId == id && it.active }
+        return WorkspaceContext(id, membership.name, "Asia/Ho_Chi_Minh", "\"policy-1\"",
+            if (id == A) setOf("patient.read") else emptySet(),
+            membershipId = membership.id, role = membership.role)
+    }
     override suspend fun signIn(): TokenBundle { loginCalls++; return bundle() }
     override suspend fun refresh(credential: StoredCredential): TokenBundle { refreshCalls++; return refreshAction(credential) }
     override suspend fun revoke(credential: StoredCredential) { revokeCalls++ }
@@ -76,4 +80,9 @@ class FakeAuthenticatedRequestExecutor : AuthenticatedRequestPort {
     }
 }
 
-suspend fun SessionCoordinator.startDemo() { restore(); signIn(); selectWorkspace(A) }
+suspend fun SessionCoordinator.startDemo() {
+    restore()
+    signIn()
+    if (state.value.phase == SessionPhase.SIGNED_OUT) signIn("doctor@viora.demo", "VioraDemo1!")
+    selectWorkspace(A)
+}

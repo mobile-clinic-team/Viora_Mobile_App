@@ -194,11 +194,11 @@ class SyntheticAssistantBackend(private val session: SessionPort, private val cl
             if(d.versionToken != request.reviewedVersionToken || !d.matches(record) || request.target.versionToken != record.versionToken) fail("VERSION_CONFLICT",412)
             val grant=assurances[request.assurance.assuranceToken] ?: fail("ASSURANCE_REQUIRED",403)
             if(!session.matches(grant.first) || grant.second.expiresAt <= clock.now() || grant.second.binding != AssuranceBinding("draft.approve",s.workspace.id,d.id,d.versionToken,record.versionToken)) fail("ASSURANCE_REQUIRED",403)
-            val evidence=HandoffEvidence(request.operation.operationId,record.id,id(),(record.currentVersion.toLong()+1).toString(),token(),token(),id(),clock.now())
+            val evidence=HandoffEvidence(request.operation.operationId,record.id,id(),(record.currentVersion.toLong()+1).toString(),token(),d.versionToken,id(),clock.now())
             // A returned demonstration projection only: C's repository/storage is never written.
             projections[evidence.operationId]=ClinicalRecord(record.id,record.workspaceId,evidence.recordVersionToken,record.allowedActions,record.createdAt,evidence.committedAt,record.encounterId,record.patientId,"DRAFT",evidence.recordVersion,
                 RecordVersion(evidence.recordVersionId,record.id,evidence.recordVersion,d.content,"AI_HANDOFF",s.userId,evidence.committedAt,null,d.id),null)
-            drafts[d.id]=updated(d,"APPROVED",approve=s.userId,evidence=evidence,version=evidence.approvedDraftVersionToken)
+            drafts[d.id]=updated(d,"APPROVED",approve=s.userId,evidence=evidence,version=token())
             assurances.remove(request.assurance.assuranceToken)
             outcomes[evidence.operationId]=AssistantOutcome("SUCCEEDED",handoff=evidence)
             evidence
@@ -218,3 +218,4 @@ class SyntheticAssistantBackend(private val session: SessionPort, private val cl
     fun expireDraft(id: String) { drafts[id]?.let { drafts[id]=updated(it,"EXPIRED") } }
     private class SafeFailure(val result: ApiResult<Nothing>): Exception()
 }
+

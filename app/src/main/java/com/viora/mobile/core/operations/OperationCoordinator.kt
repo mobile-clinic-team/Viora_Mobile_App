@@ -14,34 +14,39 @@ interface OperationPort {
     suspend fun acknowledgeResolved(operationId: String)
 }
 
-class OperationCoordinator(private val session: SessionPort, private val store: SecureStore, private val clock: AppClock) : OperationPort {
+class OperationCoordinator(private val session: SessionPort, private val store: SecureStore, private val clock: AppClock,
+    private val selfScope: Boolean = false) : OperationPort {
     private val mutex = Mutex()
     override suspend fun prepare(): OperationReceipt {
-        val snapshot = requireNotNull(session.snapshot())
+        val snapshot = requireNotNull(session.snapshot(!selfScope))
+        if (selfScope) check(session.state.value.selectedRole == com.viora.mobile.core.session.AppRole.PATIENT)
         return session.withCurrent(snapshot) {
             mutex.withLock {
                 val previous = store.readReceipts()
                 check(previous.size < 16) { "Reconcile outstanding operations first" }
                 val now = clock.now()
-                val receipt = OperationReceipt(Ids.newId(), snapshot.userId, snapshot.workspace!!.id,
-                    com.viora.mobile.core.time.WireTime.format(now), com.viora.mobile.core.time.WireTime.format(now.plusSeconds(86400)))
+                val receipt = OperationReceipt(Ids.newId(), snapshot.userId, if (selfScope) null else snapshot.workspace!!.id,
+                    com.viora.mobile.core.time.WireTime.format(now), com.viora.mobile.core.time.WireTime.format(now.plusSeconds(86400)),
+                    if (selfScope) "SELF" else "WORKSPACE")
                 store.writeReceipts(previous + receipt)
                 receipt
             }
         }
     }
     override suspend fun outstanding(): List<OperationReceipt> {
-        val snapshot = session.snapshot() ?: return emptyList()
+        val snapshot = session.snapshot(!selfScope) ?: return emptyList()
         return session.withCurrent(snapshot) {
-            store.readReceipts().filter { it.ownerUserId == snapshot.userId && it.workspaceId == snapshot.workspace!!.id }
+            store.readReceipts().filter { it.ownerUserId == snapshot.userId &&
+                it.scope == (if (selfScope) "SELF" else "WORKSPACE") && it.workspaceId == (if (selfScope) null else snapshot.workspace!!.id) }
         }
     }
     override suspend fun acknowledgeResolved(operationId: String) {
-        val snapshot = session.snapshot() ?: return
+        val snapshot = session.snapshot(!selfScope) ?: return
         session.withCurrent(snapshot) {
             mutex.withLock {
                 val receipts = store.readReceipts()
-                check(receipts.any { it.operationId == operationId && it.ownerUserId == snapshot.userId && it.workspaceId == snapshot.workspace!!.id })
+                check(receipts.any { it.operationId == operationId && it.ownerUserId == snapshot.userId &&
+                    it.scope == (if (selfScope) "SELF" else "WORKSPACE") && it.workspaceId == (if (selfScope) null else snapshot.workspace!!.id) })
                 store.writeReceipts(receipts.filterNot { it.operationId == operationId })
             }
         }

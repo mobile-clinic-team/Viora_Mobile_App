@@ -9,6 +9,14 @@ local.properties
 *.keystore
 captures/
 
+backend/node_modules/
+backend/dist/
+backend/coverage/
+backend/.nx/
+backend/.env
+backend/.env.*
+!backend/.env.example
+
 # Local Gradle/cache work directories
 .gradle-clean/
 .gradle-user-home/

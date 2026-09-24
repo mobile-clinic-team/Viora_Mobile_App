@@ -14,7 +14,7 @@ class HandoffOperationStatus(val operationId: String, val state: String, val rec
     val createdAt: String, val expiresAt: String?) {
     override fun toString() = "HandoffOperationStatus(REDACTED)"
 }
-class HandoffWriteReceipt(val draftId: String, val evidence: HandoffEvidence) {
+class HandoffWriteReceipt(val draftId: String, val evidence: HandoffEvidence, val resultingDraftVersionToken: String) {
     override fun toString() = "HandoffWriteReceipt(REDACTED)"
 }
 class HandoffOperationPage(val items: List<HandoffOperationStatus>, val nextCursor: String?) {
@@ -27,7 +27,7 @@ internal object HandoffWire {
         require(payload.status == 200)
         val dto = json.decodeFromJsonElement<Receipt>(data(payload))
         val result = requireNotNull(dto.validated(operation.operationId))
-        require(payload.etag == result.evidence.approvedDraftVersionToken)
+        require(payload.etag == result.resultingDraftVersionToken)
         return result
     }
     fun status(payload: ApiPayload, operation: OperationReceipt): HandoffOperationStatus {
@@ -69,14 +69,14 @@ internal object HandoffWire {
             primary.validate(); require(related.size <= 100); related.forEach { it.validate() }
             require(related.map { it.type to it.id }.distinct().size == related.size)
             val evidence = handoff?.model() ?: return null
-            require(primary.type == "AI_DRAFT" && primary.versionToken == evidence.approvedDraftVersionToken)
+            require(primary.type == "AI_DRAFT" && primary.versionToken != evidence.approvedDraftVersionToken)
             require(evidence.operationId == operationId && evidence.committedAt == WireTime.parse(committedAt))
             require(related.size == 2)
             val record = related.single { it.type == "RECORD" }
             val version = related.single { it.type == "RECORD_VERSION" }
             require(record.id == evidence.recordId && record.versionToken == evidence.recordVersionToken)
             require(version.id == evidence.recordVersionId && version.parentId == evidence.recordId)
-            return HandoffWriteReceipt(primary.id, evidence)
+            return HandoffWriteReceipt(primary.id, evidence, requireNotNull(primary.versionToken))
         }
     }
     @Serializable private class Status(val operationId: String, val state: String, val result: Receipt?, val errorCode: String?,
@@ -98,3 +98,4 @@ internal object HandoffWire {
     @Serializable private class Page(val data: List<Status>, val page: PageInfo)
     @Serializable private class PageInfo(val nextCursor: String?, val hasMore: Boolean)
 }
+

@@ -1,0 +1,30 @@
+✔ draft generation accepts only canonical target/instruction, never actor or tenant (1.8983ms)
+✔ draft generation rejects malformed/weak target tokens and oversized instruction (0.3201ms)
+✔ provider content must be exact bounded four-field ClinicalContent (0.7078ms)
+▶ Phase 6 Run 2 PostgreSQL durable draft/provenance/audit, authorization, rollback and OCC
+  ✔ durable generation binds canonical actor, patient, encounter, target, source, expiry and version (46.6127ms)
+  ✔ same operation replays exact receipt without another provider call or draft (35.7399ms)
+  ✔ missing governance/grants and unauthorized resources persist no output (5.9214ms)
+  ✔ target precondition and patient/encounter mismatch fail before provider (6.8197ms)
+  ✔ target changes during generation cannot commit stale draft (14.5411ms)
+  ✔ invalid provider payload never persists (9.7911ms)
+  ✔ ai_provenance failure rolls back draft, provenance and completed operation (40.9126ms)
+  ✔ audit_events failure rolls back draft, provenance and completed operation (32.5364ms)
+  ✔ provenance rejects mismatched source and target relationships (7.574ms)
+  ✔ wrong tenant and missing draft are indistinguishable; state/version predicates are atomic (130.6803ms)
+  ✔ real concurrent PostgreSQL updates have one winner and increment once (40.2387ms)
+  ✔ bigint version precision survives persistence, reads and transitions (4.2518ms)
+✔ Phase 6 Run 2 PostgreSQL durable draft/provenance/audit, authorization, rollback and OCC (517.0674ms)
+✔ AI draft adapter uses parameterized SQL and tenant/OCC predicates (1.4924ms)
+✔ AI draft adapter rejects missing tenant and stale version inputs (0.6033ms)
+✔ AI draft workflow enforces GENERATED → REVIEWING → APPROVED (2.0121ms)
+✔ AI draft workflow rejects approval before human review and supports rejection (0.6801ms)
+✔ AI actor cannot perform human approval transitions (0.4451ms)
+ℹ tests 21
+ℹ suites 0
+ℹ pass 21
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1758.2024

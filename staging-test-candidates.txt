@@ -1,0 +1,181 @@
+﻿===== DEVDEBUG-DEPENDENT FILES =====
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\app\OperationalIntegrationTest.kt
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\core\network\ApiClientTest.kt
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\core\operations\OperationCoordinatorTest.kt
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\core\security\PrivacyControllerTest.kt
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\core\session\SessionCoordinatorTest.kt
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\appointments\OperationalFixture.kt
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\appointments\OperationalHttpTest.kt
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\appointments\OperationalStateTest.kt
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\assistant\AssistantContractTest.kt
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\assistant\AssistantFixture.kt
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\assistant\AssistantStateTest.kt
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\clinical\ClinicalContextTest.kt
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\clinical\ClinicalFixture.kt
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\clinical\ClinicalRepositoryTest.kt
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\testutil\Fixtures.kt
+
+===== APIRESULT / OLD DATA ACCESS =====
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\app\AssuranceHandoffBoundaryTest.kt:10: import com.viora.mobile.feature.clinical.data.handoff.*
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\app\AssuranceHandoffBoundaryTest.kt:53: val grant = (adapter.request(binding, snapshot) as ApiResult.Success).value
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\app\AssuranceHandoffBoundaryTest.kt:161: val result = rig.handoff.request(intent) as ApiResult.Success
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\app\AssuranceHandoffBoundaryTest.kt:188: port.next = ApiResult.Success(payload(JsonObject(bad)))
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\app\AssuranceHandoffBoundaryTest.kt:200: val recovered = (recovery.lookup(intent.operation) as ApiResult.Success).value
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\app\AssuranceHandoffBoundaryTest.kt:212: assertEquals(state, (recovery.close(op) as ApiResult.Success).value.state)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\app\AssuranceHandoffBoundaryTest.kt:225: port.next = ApiResult.Success(ApiPayload(buildJsonObject {
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\app\AssuranceHandoffBoundaryTest.kt:229: val page = (recovery.discover() as ApiResult.Success).value
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\app\OperationalIntegrationTest.kt:31: assertEquals(1, (f.repositories.patients.search(PatientSearch("Synthetic")) as ApiResult.Success).value.items.size)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\app\OperationalIntegrationTest.kt:38: val first = (f.repositories.patients.search(PatientSearch("Synthetic")) as ApiResult.Success).value.items.single()
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\app\OperationalIntegrationTest.kt:45: val second = (f.repositories.patients.search(PatientSearch("Synthetic")) as ApiResult.Success).value.items.single()
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\app\OperationalIntegrationTest.kt:75: val patient = (f.repositories.patients.search(PatientSearch("Synthetic")) as ApiResult.Success).value.items.single()
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\app\OperationalIntegrationTest.kt:89: val first = (f.repositories.appointments.appointment(id) as ApiResult.Success).value
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\app\OperationalIntegrationTest.kt:101: val confirmed = (f.repositories.appointments.appointment(id) as ApiResult.Success).value
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\core\network\ApiClientTest.kt:23: assertTrue(api.execute(ApiRequest("GET", "/v1/patients?q=ab", RequestScope.WORKSPACE), snapshot) is ApiResult.Success)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\core\network\ApiClientTest.kt:41: workspaceId = A), snapshot) is ApiResult.Success)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\appointments\AppointmentLifecycleTest.kt:12: val receipt = (backend.create(f.creation(), f.operation()) as ApiResult.Success).value
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\appointments\AppointmentLifecycleTest.kt:13: val current = (backend.appointment(receipt.appointmentId) as ApiResult.Success).value
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\appointments\AppointmentLifecycleTest.kt:20: assertTrue(backend.transition(original.reference(), AppointmentAction.CONFIRM, f.operation()) is ApiResult.Success)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\appointments\AppointmentLifecycleTest.kt:21: val confirmed = (backend.appointment(original.id) as ApiResult.Success).value
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\appointments\AppointmentLifecycleTest.kt:23: assertTrue(backend.transition(confirmed.reference(), AppointmentAction.CHECK_IN, f.operation()) is ApiResult.Success)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\appointments\AppointmentLifecycleTest.kt:24: val checked = (backend.appointment(original.id) as ApiResult.Success).value
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\appointments\AppointmentLifecycleTest.kt:31: assertTrue(backend.transition(value.reference(), action, f.operation()) is ApiResult.Success)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\appointments\AppointmentLifecycleTest.kt:32: val current = (backend.appointment(value.id) as ApiResult.Success).value
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\appointments\AppointmentLifecycleTest.kt:40: assertTrue(backend.reschedule(before.reference(), input, f.operation()) is ApiResult.Success)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\appointments\AppointmentLifecycleTest.kt:42: val current = (backend.appointment(before.id) as ApiResult.Success).value
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\appointments\AppointmentLifecycleTest.kt:47: assertTrue(backend.create(f.creation(), f.operation()) is ApiResult.Success)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\appointments\AppointmentLifecycleTest.kt:54: assertTrue(backend.create(f.creation(), operation) is ApiResult.Success)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\appointments\AppointmentLifecycleTest.kt:56: val list = backend.appointments(AppointmentQuery(f.clock.now(), f.clock.now().plusSeconds(86400))) as ApiResult.Success
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\appointments\AppointmentLifecycleTest.kt:62: assertEquals("CHECKED_IN", (backend.appointment(value.id) as ApiResult.Success).value.status)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\appointments\OperationalFixture.kt:6: import com.viora.mobile.feature.appointments.data.*
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\appointments\OperationalHttpTest.kt:6: import com.viora.mobile.feature.appointments.data.appointmentRepository
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\appointments\OperationalHttpTest.kt:8: import com.viora.mobile.feature.doctors.data.doctorDirectory
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\appointments\OperationalHttpTest.kt:10: import com.viora.mobile.feature.patients.data.patientDirectory
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\appointments\OperationalHttpTest.kt:23: private fun patientDirectory(requests: AuthenticatedRequestPort, session: SessionPort) = com.viora.mobile.feature.patients.data.patientDirectory(requests, session, dispatcher)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\appointments\OperationalHttpTest.kt:24: private fun doctorDirectory(requests: AuthenticatedRequestPort, session: SessionPort) = com.viora.mobile.feature.doctors.data.doctorDirectory(requests, session, dispatcher)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\appointments\OperationalHttpTest.kt:26: com.viora.mobile.feature.appointments.data.appointmentRepository(requests, session, capability, dispatcher)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\appointments\OperationalHttpTest.kt:35: next = ApiResult.Success(ApiPayload(body, etag, A, 200, B))
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\appointments\OperationalHttpTest.kt:40: val value = (patientDirectory(http, session).patient(f.patientId) as ApiResult.Success).value
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\appointments\OperationalHttpTest.kt:46: http.next = ApiResult.Success(ApiPayload(fixture("patients/patient.json").replace(",\"phone\":null", ""), "\"patient-1\"", A, 200))
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\appointments\OperationalHttpTest.kt:62: http.next = ApiResult.Success(ApiPayload("""{"data":[],"page":{"nextCursor":null,"hasMore":false}}""", null, A, 200))
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\appointments\OperationalHttpTest.kt:63: assertTrue((repo.search(PatientSearch("aa")) as ApiResult.Success).value.items.isEmpty())
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\appointments\OperationalHttpTest.kt:68: assertFalse((doctorDirectory(http, session).doctor(f.doctorId) as ApiResult.Success).value.supported)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\appointments\OperationalHttpTest.kt:69: http.next = ApiResult.Success(ApiPayload(raw.replace("\"bio\":null,", ""), null, A, 200))
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\appointments\OperationalHttpTest.kt:82: assertNull((appointmentRepository(http, session).appointment(f.appointmentId) as ApiResult.Success).value.knownStatus)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\appointments\OperationalHttpTest.kt:83: http.next = ApiResult.Success(ApiPayload(raw, "\"other\"", A, 200))
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\appointments\OperationalStateTest.kt:28: response = ApiResult.Success(emptyList()); read.retry(); runCurrent(); assertEquals(ReadState.Empty, read.state.value)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\appointments\OperationalStateTest.kt:29: response = ApiResult.Success(listOf("synthetic")); read.retry(); runCurrent(); assertTrue(read.state.value is ReadState.Content)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\appointments\OperationalStateTest.kt:35: read.load(300) { calls++; ApiResult.Success("old") }
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\appointments\OperationalStateTest.kt:37: read.load(300) { calls++; ApiResult.Success("latest") }
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\appointments\OperationalStateTest.kt:41: read.load { withContext(NonCancellable) { gate.await(); ApiResult.Success("obsolete") } }; runCurrent()
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\appointments\OperationalStateTest.kt:42: read.load { ApiResult.Success("current") }; runCurrent(); gate.complete(Unit); runCurrent()
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\appointments\OperationalStateTest.kt:49: read.load { withContext(NonCancellable) { gate.await(); ApiResult.Success("old workspace content") } }; runCurrent()
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\appointments\OperationalStateTest.kt:65: assertEquals(1, (backend.appointments(AppointmentQuery(f.clock.now(), f.clock.now().plusSeconds(86400))) as ApiResult.Success).value.items.size)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\appointments\OperationalStateTest.kt:85: assertEquals(2, (backend.appointments(AppointmentQuery(f.clock.now(), f.clock.now().plusSeconds(86400))) as ApiResult.Success).value.items.size)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\appointments\SchedulingTest.kt:39: val result = backend.availability(fixture.doctorId, fixture.locationId, fixture.clock.now().plusSeconds(5000), fixture.clock.now().plusSeconds(20000)) as ApiResult.Success
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\appointments\SchedulingTest.kt:42: assertTrue(backend.create(fixture.creation(9000, 10000), fixture.operation()) is ApiResult.Success)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\assistant\AssistantContractTest.kt:5: import com.viora.mobile.feature.assistant.data.SyntheticGeneration
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\assistant\AssistantContractTest.kt:18: assertTrue((f.backend.conversations() as ApiResult.Success).value.items.isEmpty())
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\assistant\AssistantContractTest.kt:19: val op=f.ops.prepare(); val receipt=(f.backend.create(f.context,op) as ApiResult.Success).value
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\assistant\AssistantContractTest.kt:20: val conversation=(f.backend.conversation(receipt.resourceId) as ApiResult.Success).value
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\assistant\AssistantContractTest.kt:22: assertEquals(1,(f.backend.conversations() as ApiResult.Success).value.items.size)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\assistant\AssistantContractTest.kt:26: val c=(f.backend.create(AssistantContext("GENERAL"),f.ops.prepare()) as ApiResult.Success).value
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\assistant\AssistantContractTest.kt:28: val messages=(f.backend.messages(c.resourceId) as ApiResult.Success).value.items
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\assistant\AssistantContractTest.kt:35: assertTrue(f.contexts.validate(f.context) is ApiResult.Success)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\assistant\AssistantContractTest.kt:36: val wrong=AssistantContext("ENCOUNTER",com.viora.mobile.feature.clinical.data.SyntheticClinicalData.PATIENT_A,com.viora.mobile.feature.clinical.data.SyntheticClinicalData.ENCOUNTER_B)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\assistant\AssistantContractTest.kt:37: assertFalse(f.contexts.validate(wrong) is ApiResult.Success)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\assistant\AssistantContractTest.kt:45: assertEquals(d.id,(f.backend.drafts(target.id) as ApiResult.Success).value.items.single().id)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\assistant\AssistantContractTest.kt:51: assertEquals("FAILED",(f.backend.outcome(op) as ApiResult.Success).value.state)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\assistant\AssistantContractTest.kt:52: assertTrue((f.backend.drafts(f.target().id) as ApiResult.Success).value.items.isEmpty())
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\assistant\AssistantContractTest.kt:58: val receipt=(f.backend.outcome(op) as ApiResult.Success).value.receipt!!
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\assistant\AssistantContractTest.kt:59: assertTrue(f.backend.draft(receipt.resourceId) is ApiResult.Success); assertEquals(1,f.backend.generationCalls)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\assistant\AssistantContractTest.kt:65: assertEquals("PROCESSING",(f.backend.outcome(op) as ApiResult.Success).value.state)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\assistant\AssistantContractTest.kt:66: assertEquals("PROCESSING",(f.backend.close(op) as ApiResult.Success).value.state)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\assistant\AssistantContractTest.kt:71: assertEquals("PROCESSING",(f.backend.close(op) as ApiResult.Success).value.state)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\assistant\AssistantContractTest.kt:73: assertEquals("CLOSED",(f.backend.close(absent) as ApiResult.Success).value.state)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\assistant\AssistantContractTest.kt:78: f.backend.review(d,f.ops.prepare()); val review=(f.backend.draft(d.id) as ApiResult.Success).value
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\assistant\AssistantContractTest.kt:81: f.backend.reject(review,null,f.ops.prepare()); assertEquals("REJECTED",(f.backend.draft(d.id) as ApiResult.Success).value.status)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\assistant\AssistantContractTest.kt:95: val grant=(f.backend.request(AssuranceBinding("draft.approve",A,d.id,d.versionToken,d.targetVersionToken),snapshot) as ApiResult.Success).value
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\assistant\AssistantContractTest.kt:97: val evidence=(f.backend.request(request) as ApiResult.Success).value
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\assistant\AssistantContractTest.kt:98: val result=(f.backend.readCommitted(evidence) as ApiResult.Success).value
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\assistant\AssistantContractTest.kt:103: assertEquals("APPROVED",(f.backend.draft(d.id) as ApiResult.Success).value.status)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\assistant\AssistantContractTest.kt:107: val grant=(f.backend.request(AssuranceBinding("draft.approve",A,d.id,d.versionToken,d.targetVersionToken),snapshot) as ApiResult.Success).value
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\assistant\AssistantContractTest.kt:110: assertEquals(412,(result as ApiResult.Failure).status); assertEquals("IN_REVIEW",(f.backend.draft(d.id) as ApiResult.Success).value.status)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\assistant\AssistantFixture.kt:9: import com.viora.mobile.feature.assistant.data.SyntheticAssistantBackend
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\assistant\AssistantFixture.kt:12: import com.viora.mobile.feature.clinical.data.*
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\assistant\AssistantFixture.kt:29: override suspend fun record(id:String):ApiResult<ClinicalRecord> = recordOverride?.let { ApiResult.Success(it) } ?: clinical.record(id)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\assistant\AssistantFixture.kt:36: suspend fun target()=(contexts.validate(context) as ApiResult.Success).value!!
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\assistant\AssistantFixture.kt:38: val op=ops.prepare(); val result=backend.generate(target().reference(),null,op) as ApiResult.Success
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\assistant\AssistantFixture.kt:40: return (backend.draft(result.value.resourceId) as ApiResult.Success).value
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\assistant\AssistantFixture.kt:44: return (backend.draft(draft.id) as ApiResult.Success).value
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\assistant\AssistantStateTest.kt:5: import com.viora.mobile.feature.assistant.data.SyntheticGeneration
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\auth\TokenContractTest.kt:3: import com.viora.mobile.feature.auth.data.dto.TokenBundleDto
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\auth\TokenContractTest.kt:17: val dto = json.decodeFromString<Envelope>(fixture()).data
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\auth\TokenContractTest.kt:33: assertThrows(Exception::class.java) { json.decodeFromString<Envelope>(bad).data.toDomain() }
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\clinical\ClinicalContextTest.kt:5: import com.viora.mobile.feature.clinical.data.SyntheticClinicalData as Data
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\clinical\ClinicalContextTest.kt:19: val entry = (f.reader.entry(Data.PATIENT_A) as ApiResult.Success).value
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\clinical\ClinicalContextTest.kt:21: val linked = (f.reader.entry(Data.PATIENT_A, Data.APPOINTMENT) as ApiResult.Success).value
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\clinical\ClinicalContextTest.kt:24: val record = (f.reader.record(Data.RECORD) as ApiResult.Success).value
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\clinical\ClinicalContextTest.kt:32: val before = (f.repository.encounters(PatientReference(Data.PATIENT_A, Data.WORKSPACE_A)) as ApiResult.Success).value.items.size
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\clinical\ClinicalContextTest.kt:33: val entry = (f.reader.entry(Data.PATIENT_A, "69999999-9999-4999-8999-999999999999") as ApiResult.Success).value
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\clinical\ClinicalContextTest.kt:35: assertNull((f.reader.encounter(Data.EMPTY_ENCOUNTER) as ApiResult.Success).value.encounter.recordId)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\clinical\ClinicalContextTest.kt:36: assertEquals(before, (f.repository.encounters(PatientReference(Data.PATIENT_A, Data.WORKSPACE_A)) as ApiResult.Success).value.items.size)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\clinical\ClinicalContextTest.kt:40: val original = (f.repository.record(Data.RECORD) as ApiResult.Success).value
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\clinical\ClinicalContextTest.kt:42: override suspend fun record(id: String): ApiResult<ClinicalRecord> = ApiResult.Success(ClinicalRecord(
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\clinical\ClinicalContextTest.kt:68: val record = (f.reader.record(Data.RECORD) as ApiResult.Success).value
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\clinical\ClinicalFixture.kt:5: import com.viora.mobile.feature.clinical.data.SyntheticClinicalReadRepository
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\clinical\ClinicalFixture.kt:6: import com.viora.mobile.feature.clinical.data.SyntheticClinicalData
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\clinical\ClinicalRepositoryTest.kt:6: import com.viora.mobile.feature.clinical.data.clinicalReadRepository
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\clinical\ClinicalRepositoryTest.kt:7: import com.viora.mobile.feature.clinical.data.SyntheticClinicalData as Data
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\clinical\ClinicalRepositoryTest.kt:17: private fun payload(json: String, etag: String? = "\"clinical-demo-record-7\"") = ApiResult.Success(ApiPayload(json, etag, null, 200))
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\clinical\ClinicalRepositoryTest.kt:22: val record = (repository.record(Data.RECORD) as ApiResult.Success).value
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\clinical\ClinicalRepositoryTest.kt:67: assertFalse((repository.record(Data.RECORD) as ApiResult.Success).value.supported)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\clinical\ClinicalRepositoryTest.kt:73: assertNull((repository.encounter(Data.ENCOUNTER) as ApiResult.Success).value.recordId)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\clinical\ClinicalRepositoryTest.kt:75: assertTrue((repository.encounters(PatientReference(Data.PATIENT_A, Data.WORKSPACE_A)) as ApiResult.Success).value.items.isEmpty())
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\clinical\ClinicalRepositoryTest.kt:84: assertEquals(1, (repository.encounters(PatientReference(Data.PATIENT_A, Data.WORKSPACE_A), PageRequest(10, "opaque+cursor")) as ApiResult.Success).value.items.size)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\clinical\ClinicalRepositoryTest.kt:96: f.requests.next = payload(f.json("record")); assertTrue(repository.record(Data.RECORD) is ApiResult.Success)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\clinical\ClinicalRepositoryTest.kt:123: assertEquals("7", (f.repository.record(Data.RECORD) as ApiResult.Success).value.currentVersion)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\clinical\ClinicalRepositoryTest.kt:124: assertNull((f.repository.encounter(Data.EMPTY_ENCOUNTER) as ApiResult.Success).value.recordId)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\clinical\ClinicalRepositoryTest.kt:128: assertTrue(f.repository.record(Data.RECORD) is ApiResult.Success)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\clinical\ClinicalStateTest.kt:16: loader.load { ApiResult.Success(listOf("fixture")) }
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\clinical\ClinicalStateTest.kt:19: loader.load { ApiResult.Success(emptyList()) }; runCurrent()
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\clinical\ClinicalStateTest.kt:28: response = ApiResult.Success("current"); loader.retry(); runCurrent()
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\clinical\ClinicalStateTest.kt:47: response = ApiResult.Success("recovered"); loader.retry(); runCurrent()
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\clinical\ClinicalStateTest.kt:54: loader.load { calls++; withContext(NonCancellable) { gate.await(); ApiResult.Success("obsolete") } }; runCurrent()
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\clinical\ClinicalStateTest.kt:63: loader.load { withContext(NonCancellable) { gate.await(); ApiResult.Success("old") } }; runCurrent()
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\clinical\ClinicalStateTest.kt:64: loader.load { ApiResult.Success("new") }; runCurrent(); gate.complete(Unit); runCurrent()
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\clinical\ClinicalStateTest.kt:78: result = ApiResult.Success("read"); model.retry(); runCurrent()
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\doctors\DoctorDirectoryTest.kt:14: assertEquals(f.doctorId, (backend.doctors(DoctorQuery(locationId = f.locationId, status = "ACTIVE")) as ApiResult.Success).value.items.single().id)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\doctors\DoctorDirectoryTest.kt:15: assertTrue((backend.doctors(DoctorQuery(status = "INACTIVE")) as ApiResult.Success).value.items.isEmpty())
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\doctors\DoctorDirectoryTest.kt:16: assertEquals(f.doctorId, (backend.doctor(f.doctorId) as ApiResult.Success).value.id)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\doctors\DoctorDirectoryTest.kt:17: assertEquals(1, (backend.shifts(f.doctorId, f.clock.now(), f.clock.now().plusSeconds(86400)) as ApiResult.Success).value.items.size)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\patients\PatientDirectoryTest.kt:13: assertEquals(f.patientId, (backend.search(PatientSearch("  Synthetic  ")) as ApiResult.Success).value.items.single().id)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\patients\PatientDirectoryTest.kt:14: assertEquals(f.patientId, (backend.patient(f.patientId) as ApiResult.Success).value.id)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\patients\PatientDirectoryTest.kt:15: assertTrue((backend.search(PatientSearch("absent")) as ApiResult.Success).value.items.isEmpty())
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\patients\PatientDirectoryTest.kt:18: assertTrue(backend.search(PatientSearch("Synthetic")) is ApiResult.Success)
+
+===== ENVIRONMENT / SESSION CONSTRUCTORS =====
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\app\OperationalIntegrationTest.kt:19: val bindings = EnvironmentBindings(clock)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\app\OperationalIntegrationTest.kt:21: val session = SessionCoordinator(bindings.auth, bindings.workspaces, store, clock, scope)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\core\network\ApiClientTest.kt:119: val session = SessionCoordinator(backend, backend, store, clock, scope)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\core\operations\OperationCoordinatorTest.kt:12: val session = SessionCoordinator(backend, backend, store, clock, backgroundScope)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\core\operations\OperationCoordinatorTest.kt:27: val session = SessionCoordinator(backend, backend, store, clock, backgroundScope)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\core\security\PrivacyControllerTest.kt:14: val session = SessionCoordinator(backend, backend, store, clock, backgroundScope)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\core\session\HttpPasswordGatewayTest.kt:68: val session = SessionCoordinator(gateway, gateway, store, clock, scope)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\core\session\HttpPasswordGatewayTest.kt:83: val restored = SessionCoordinator(restoredGateway, restoredGateway, store, clock, scope)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\core\session\HttpPasswordGatewayTest.kt:103: val session = SessionCoordinator(gateway, gateway, store, clock, scope)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\core\session\SessionCoordinatorTest.kt:13: val session = SessionCoordinator(backend, backend, store, clock, backgroundScope)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\core\session\SessionCoordinatorTest.kt:33: val session = SessionCoordinator(backend, backend, store, clock, backgroundScope)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\core\session\SessionCoordinatorTest.kt:51: val session = SessionCoordinator(backend, backend, store, clock, backgroundScope)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\core\session\SessionCoordinatorTest.kt:64: val session = SessionCoordinator(backend, backend, store, clock, backgroundScope)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\core\session\SessionCoordinatorTest.kt:73: val session = SessionCoordinator(backend, backend, store, clock, backgroundScope)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\core\session\SessionCoordinatorTest.kt:88: val original = SessionCoordinator(backend, backend, store, clock, backgroundScope)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\core\session\SessionCoordinatorTest.kt:90: val restored = SessionCoordinator(backend, backend, store, clock, backgroundScope)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\core\session\SessionCoordinatorTest.kt:101: val session = SessionCoordinator(backend, backend, store, clock, backgroundScope)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\core\session\SessionCoordinatorTest.kt:113: val session = SessionCoordinator(backend, backend, store, clock, backgroundScope)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\core\session\SessionCoordinatorTest.kt:122: val session = SessionCoordinator(backend, backend, store, clock, backgroundScope)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\appointments\OperationalHttpTest.kt:32: return SessionCoordinator(backend, backend, FakeSecureStore(), f.clock, scope).also { it.startDemo() }
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\appointments\OperationalStateTest.kt:20: return SessionCoordinator(backend, backend, FakeSecureStore(), clock, scope).also { it.startDemo() }
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\assistant\AssistantFixture.kt:19: val clock=FakeClock(); val store=FakeSecureStore(); val bindings=EnvironmentBindings(clock)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\assistant\AssistantFixture.kt:23: val session=SessionCoordinator(bindings.auth,bindings.workspaces,store,clock,lifecycleScope)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\clinical\ClinicalFixture.kt:14: val bindings = EnvironmentBindings(clock)
+C:\Users\LAPTOP\Viora-Mobile-App\app\src\test\java\com\viora\mobile\feature\clinical\ClinicalFixture.kt:16: val session = SessionCoordinator(bindings.auth, bindings.workspaces, FakeSecureStore(), clock, lifecycleScope)
